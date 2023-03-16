@@ -36,11 +36,22 @@ var (
 	warn = log.New(os.Stderr, term.RedBold("zel_dump:")+" ", log.Lshortfile)
 )
 
+func usage() {
+	const usage = "Usage: zel_dump [OPTIONS]... FILE.zel..."
+	fmt.Fprintln(os.Stderr, usage)
+	flag.PrintDefaults()
+}
+
 func main() {
 	// parse command line arguments.
 	var palPath string
-	flag.StringVar(&palPath, "pal", "", "palette path")
+	flag.Usage = usage
+	flag.StringVar(&palPath, "pal", "", "palette path (256 RGBA colours)")
 	flag.Parse()
+	if flag.NArg() == 0 {
+		flag.Usage()
+		os.Exit(1)
+	}
 	// parse palette.
 	pal, err := parsePal(palPath)
 	if err != nil {

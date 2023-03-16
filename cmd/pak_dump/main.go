@@ -31,8 +31,19 @@ var (
 	warn = log.New(os.Stderr, term.RedBold("pak_dump:")+" ", log.Lshortfile)
 )
 
+func usage() {
+	const usage = "Usage: pak_dump [OPTIONS]... FILE.pak..."
+	fmt.Fprintln(os.Stderr, usage)
+	flag.PrintDefaults()
+}
+
 func main() {
+	flag.Usage = usage
 	flag.Parse()
+	if flag.NArg() == 0 {
+		flag.Usage()
+		os.Exit(1)
+	}
 	for _, pakPath := range flag.Args() {
 		if err := dumpPakArchive(pakPath, rootDumpDir); err != nil {
 			log.Fatalf("%+v", err)

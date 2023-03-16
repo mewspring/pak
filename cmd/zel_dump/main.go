@@ -59,17 +59,14 @@ func main() {
 	}
 	// dump ZEL image frames.
 	for _, zelPath := range flag.Args() {
-		if err := dumpZelImage(zelPath, pal, rootDumpDir); err != nil {
+		if err := dumpZelImage(zelPath, pal); err != nil {
 			log.Fatalf("%+v", err)
 		}
 	}
 }
 
-// rootDumpDir specifies the top-level output directory.
-const rootDumpDir = "_dump_"
-
 // dumpZelImage dumps the given ZEL image to the specified output directory.
-func dumpZelImage(zelPath string, pal color.Palette, dumpDir string) error {
+func dumpZelImage(zelPath string, pal color.Palette) error {
 	buf, err := ioutil.ReadFile(zelPath)
 	if err != nil {
 		return errors.WithStack(err)
@@ -89,9 +86,7 @@ func dumpZelImage(zelPath string, pal color.Palette, dumpDir string) error {
 		panic(fmt.Errorf("mismatch between frameOffsets[%d]=%d and len(buf)=%d", len(frameOffsets)-1, frameOffsets[len(frameOffsets)-1], len(buf)))
 	}
 	// create output directory.
-	zelName := pathutil.FileName(zelPath)
-	zelNameWithoutExt := pathutil.TrimExt(zelName)
-	dstDir := filepath.Join(dumpDir, zelNameWithoutExt)
+	dstDir := pathutil.TrimExt(zelPath)
 	if err := os.MkdirAll(dstDir, 0o755); err != nil {
 		return errors.WithStack(err)
 	}

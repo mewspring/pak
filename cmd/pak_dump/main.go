@@ -75,7 +75,7 @@ func dumpPakArchive(pakPath, dumpDir string) error {
 	if err := os.MkdirAll(dstDir, 0o755); err != nil {
 		return errors.WithStack(err)
 	}
-	// output PAK subarchives (and files?).
+	// output PAK subarchives (and files).
 	var archivePaths []string
 	for i := 0; i < len(archiveOffsets)-1; i++ {
 		archiveStartOffset := archiveOffsets[i]

@@ -91,7 +91,11 @@ func dumpZelImage(zelPath string, pal color.Palette, dumpDir string) error {
 		frameContents := buf[frameStartOffset:frameEndOffset]
 		pngName := fmt.Sprintf("frame_%04d.png", i)
 		pngPath := filepath.Join(dstDir, pngName)
-		img := parseFrame(frameContents, pal)
+		img, ok := parseFrame(frameContents, pal)
+		if !ok {
+			warn.Printf("skipping invalid frame (%d/%d) of %q", i, len(frameOffsets)-1, zelPath)
+			continue // skip
+		}
 		dbg.Printf("creating %q", pngPath)
 		if err := imgutil.WriteFile(pngPath, img); err != nil {
 			return errors.WithStack(err)
@@ -107,10 +111,14 @@ func dumpZelImage(zelPath string, pal color.Palette, dumpDir string) error {
 //    data   []byte
 
 // parseFrame parses the given ZEL frame contents.
-func parseFrame(frameContents []byte, pal color.Palette) image.Image {
+func parseFrame(frameContents []byte, pal color.Palette) (image.Image, bool) {
 	// parse ZEL frame.
 	frameWidth := int(binary.LittleEndian.Uint16(frameContents[0:2]))
 	frameHeight := int(binary.LittleEndian.Uint16(frameContents[2:4]))
+	// sanity check.
+	if frameWidth == 0 || frameHeight == 0 || frameWidth > 640 || frameHeight > 480 {
+		return nil, false
+	}
 	dbg.Printf("frame dimensions: %dx%d", frameWidth, frameHeight)
 	bounds := image.Rect(0, 0, frameWidth, frameHeight)
 	dst := image.NewRGBA(bounds)
@@ -149,7 +157,7 @@ func parseFrame(frameContents []byte, pal color.Palette) image.Image {
 	if *total != frameWidth*frameHeight {
 		panic(fmt.Errorf("mismatch between total pixels drawn (%d) and expected image size (%dx%d = %d)", *total, frameWidth, frameHeight, frameWidth*frameHeight))
 	}
-	return dst
+	return dst, true
 }
 
 // parsePal parses the given RGBA palette.
@@ -185,7 +193,7 @@ func parsePal(palPath string) (color.Palette, error) {
 // row by row from the bottom to the top of the image.
 func pixelDrawer(dst draw.Image, w, h int) (func(color.Color), *int) {
 	total := 0
-	x, y := 0, h-1
+	x, y := 0, 0
 	return func(c color.Color) {
 		// TODO: Remove sanity check once the zel decoder library has mature.
 		if x < 0 || x >= w {
@@ -199,7 +207,7 @@ func pixelDrawer(dst draw.Image, w, h int) (func(color.Color), *int) {
 		x++
 		if x >= w {
 			x = 0
-			y--
+			y++
 		}
 	}, &total
 }

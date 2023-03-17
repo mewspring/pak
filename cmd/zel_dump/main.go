@@ -160,7 +160,7 @@ func parseFrame(frameContents []byte, pal color.Palette) (image.Image, bool) {
 			}
 		}
 	}
-	if *total != frameWidth*frameHeight {
+	if *total > frameWidth*frameHeight {
 		panic(fmt.Errorf("mismatch between total pixels drawn (%d) and expected image size (%dx%d = %d)", *total, frameWidth, frameHeight, frameWidth*frameHeight))
 	}
 	return dst, true

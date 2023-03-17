@@ -34,7 +34,12 @@ var (
 
 // DecodeAll decodes the given ZEL image using colours from the provided
 // palette, and returns the sequential frames.
-func DecodeAll(zelPath string, pal color.Palette) ([]image.Image, error) {
+func DecodeAll(zelPath string, pal color.Palette) (imgs []image.Image, err error) {
+	defer func() {
+		if e := recover(); e != nil {
+			err = errors.Errorf("recovered panic in zel.DecodeAll: %v", e)
+		}
+	}()
 	buf, err := ioutil.ReadFile(zelPath)
 	if err != nil {
 		return nil, errors.WithStack(err)
@@ -54,28 +59,31 @@ func DecodeAll(zelPath string, pal color.Palette) ([]image.Image, error) {
 		panic(fmt.Errorf("mismatch between frameOffsets[%d]=%d and len(buf)=%d", len(frameOffsets)-1, frameOffsets[len(frameOffsets)-1], len(buf)))
 	}
 	// output ZEL frames.
-	var imgs []image.Image
 	for i := 0; i < len(frameOffsets)-1; i++ {
 		frameStartOffset := frameOffsets[i]
 		frameEndOffset := frameOffsets[i+1]
-		frameContents := buf[frameStartOffset:frameEndOffset]
+		frameContents := buf[frameStartOffset:frameEndOffset:frameEndOffset]
 		img, ok := parseFrame(frameContents, pal)
 		if !ok {
-			warn.Printf("skipping invalid frame (%d/%d) of %q", i, len(frameOffsets)-1, zelPath)
-			continue // skip
+			//warn.Printf("skipping invalid frame (%d/%d) of %q", i, len(frameOffsets)-1, zelPath)
+			//continue // skip
+			return nil, errors.Errorf("unable to decode frame (%d/%d) of %q", i, len(frameOffsets)-1, zelPath)
 		}
 		imgs = append(imgs, img)
 	}
-	return imgs, nil
+	return imgs, errors.WithStack(err)
 }
 
 // parseFrame parses the given ZEL frame contents.
 func parseFrame(frameContents []byte, pal color.Palette) (image.Image, bool) {
 	// parse ZEL frame.
+	if len(frameContents) == 0 {
+		return image.NewRGBA(image.Rect(0, 0, 1, 1)), true // dummy 1x1 image used for empty frames
+	}
 	frameWidth := int(binary.LittleEndian.Uint16(frameContents[0:2]))
 	frameHeight := int(binary.LittleEndian.Uint16(frameContents[2:4]))
 	// sanity check.
-	if frameWidth == 0 || frameHeight == 0 || frameWidth > 640 || frameHeight > 480 {
+	if frameWidth == 0 || frameHeight == 0 || frameWidth > 640 || frameHeight > 640 { // NOTE: 640 is a valid height of `archive_0012/archive_0001/frame_0165.png`.
 		return nil, false
 	}
 	dbg.Printf("frame dimensions: %dx%d", frameWidth, frameHeight)
@@ -85,7 +93,6 @@ func parseFrame(frameContents []byte, pal color.Palette) (image.Image, bool) {
 	drawPixel, total := pixelDrawer(dst, frameWidth, frameHeight)
 	for pos := 0; pos < len(data); pos += 2 {
 		cmd := binary.LittleEndian.Uint16(data[pos : pos+2])
-		dbg.Printf("cmd: 0x%04X", cmd)
 		if cmd == 0 {
 			break
 		}

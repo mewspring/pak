@@ -83,7 +83,9 @@ func parseFrame(frameContents []byte, pal color.Palette) (image.Image, bool) {
 	frameWidth := int(binary.LittleEndian.Uint16(frameContents[0:2]))
 	frameHeight := int(binary.LittleEndian.Uint16(frameContents[2:4]))
 	// sanity check.
-	if frameWidth == 0 || frameHeight == 0 || frameWidth > 640 || frameHeight > 640 { // NOTE: 640 is a valid height of `archive_0012/archive_0001/frame_0165.png`.
+	// NOTE: 650 is a valid width of `archive_0012/archive_0005/frame_0000.png`.
+	// NOTE: 640 is a valid height of `archive_0012/archive_0001/frame_0165.png`.
+	if frameWidth == 0 || frameHeight == 0 || frameWidth > 1024 || frameHeight > 1024 {
 		return nil, false
 	}
 	dbg.Printf("frame dimensions: %dx%d", frameWidth, frameHeight)
@@ -91,8 +93,10 @@ func parseFrame(frameContents []byte, pal color.Palette) (image.Image, bool) {
 	dst := image.NewRGBA(bounds)
 	data := frameContents[4:]
 	drawPixel, total := pixelDrawer(dst, frameWidth, frameHeight)
-	for pos := 0; pos < len(data); pos += 2 {
+	for pos := 0; pos < len(data); {
 		cmd := binary.LittleEndian.Uint16(data[pos : pos+2])
+		pos += 2
+		//dbg.Printf("cmd: 0x%04X", cmd)
 		if cmd == 0 {
 			break
 		}
@@ -100,6 +104,7 @@ func parseFrame(frameContents []byte, pal color.Palette) (image.Image, bool) {
 		case cmd&0x4000 != 0:
 			// transparent lines.
 			ySkip := int(cmd & 0xFFF)
+			//dbg.Printf("   transparent lines (ySkip=%d)", ySkip)
 			skip := ySkip * frameWidth
 			for j := 0; j < skip; j++ {
 				drawPixel(color.Transparent)
@@ -107,15 +112,26 @@ func parseFrame(frameContents []byte, pal color.Palette) (image.Image, bool) {
 		case cmd&0x1000 != 0:
 			// regular pixels.
 			npixels := int(cmd & 0xFFF)
+			//dbg.Printf("   regular pixels (npixels=%d)", npixels)
 			for j := 0; j < npixels; j++ {
 				palIndex := data[pos]
+				//dbg.Printf("      regular pixel 0x%02X", palIndex)
 				pos++
 				drawPixel(pal[palIndex])
 			}
 		default:
 			// transparent pixels.
 			xSkip := int(cmd & 0xFFF)
+			//dbg.Printf("   transparent pixels (xSkip=%d)", xSkip)
 			skip := xSkip
+			for j := 0; j < skip; j++ {
+				drawPixel(color.Transparent)
+			}
+		}
+		if cmd&0x8000 != 0 {
+			// clear line
+			skip := (frameWidth - *total) % frameWidth // TODO: double-check that this is correct
+			//dbg.Printf("   clear line (skip=%d)", skip)
 			for j := 0; j < skip; j++ {
 				drawPixel(color.Transparent)
 			}

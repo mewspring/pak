@@ -1,3 +1,4 @@
+// Package zel provides access to ZEL image files.
 package zel
 
 import (

@@ -38,8 +38,8 @@ func usage() {
 func main() {
 	// parse command line arguments.
 	var palPath string
-	flag.Usage = usage
 	flag.StringVar(&palPath, "pal", "", "palette path (256 RGBA colours)")
+	flag.Usage = usage
 	flag.Parse()
 	if flag.NArg() == 0 {
 		flag.Usage()

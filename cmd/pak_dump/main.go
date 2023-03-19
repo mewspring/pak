@@ -12,7 +12,9 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"strings"
 
+	"github.com/mewkiz/pkg/jsonutil"
 	"github.com/mewkiz/pkg/pathutil"
 	"github.com/mewkiz/pkg/term"
 	"github.com/mewspring/pak/archive/pak"
@@ -35,14 +37,21 @@ func usage() {
 }
 
 func main() {
+	// parse command line arguments.
+	var listfilePath string
+	flag.StringVar(&listfilePath, "listfile", "", "listfile path (JSON format)")
 	flag.Usage = usage
 	flag.Parse()
 	if flag.NArg() == 0 {
 		flag.Usage()
 		os.Exit(1)
 	}
+	listfile, err := parseListfile(listfilePath)
+	if err != nil {
+		log.Fatalf("%+v", err)
+	}
 	for _, pakPath := range flag.Args() {
-		if err := dumpPakArchive(pakPath, rootDumpDir); err != nil {
+		if err := dumpPakArchive(pakPath, rootDumpDir, listfile); err != nil {
 			log.Fatalf("%+v", err)
 		}
 	}
@@ -52,7 +61,7 @@ func main() {
 const rootDumpDir = "_dump_"
 
 // dumpPakArchive dumps the given PAK archive to the specified output directory.
-func dumpPakArchive(pakPath, dumpDir string) error {
+func dumpPakArchive(pakPath, dumpDir string, listfile map[string]string) error {
 	// parse PAK archive.
 	dbg.Printf("extracting %q", pakPath)
 	filesContents, err := pak.Extract(pakPath)
@@ -71,8 +80,7 @@ func dumpPakArchive(pakPath, dumpDir string) error {
 	for i, fileContents := range filesContents {
 		name := "archive"
 		ext := "pak"
-		isArch := isArchive(fileContents)
-		if !isArch {
+		if !isArchive(fileContents) {
 			if isSound(fileContents) {
 				name = "sound"
 				ext = "wav"
@@ -83,18 +91,19 @@ func dumpPakArchive(pakPath, dumpDir string) error {
 		}
 		dstName := fmt.Sprintf("%s_%04d.%s", name, i, ext)
 		dstPath := filepath.Join(dstDir, dstName)
+		dstPath = replaceName(dstPath, listfile)
 		dbg.Printf("creating %q", dstPath)
 		if err := ioutil.WriteFile(dstPath, fileContents, 0o644); err != nil {
 			return errors.WithStack(err)
 		}
-		if isArch {
+		if filepath.Ext(dstPath) == ".pak" {
 			subarchivePaths = append(subarchivePaths, dstPath)
 		}
 	}
 	// dump subarchives.
 	//dbg.Printf("--- [ dumping subarchives of %q ] ---", pakPath)
 	for _, subarchivePath := range subarchivePaths {
-		if err := dumpPakArchive(subarchivePath, dstDir); err != nil {
+		if err := dumpPakArchive(subarchivePath, dstDir, listfile); err != nil {
 			return errors.WithStack(err)
 		}
 	}
@@ -113,4 +122,43 @@ func isSound(buf []byte) bool {
 		return false
 	}
 	return string(buf[0:4]) == "RIFF"
+}
+
+// parseListfile parses the given listfile.
+//
+// Example listfile:
+//
+//	{
+//		"X/archive_0000.pak": "X/core.pak",
+//		"X/core/file_0002.bin": "X/core/core.pal",
+//		"X/core/file_0003.bin": "X/core/palette.bmp"
+//	}
+func parseListfile(listfilePath string) (map[string]string, error) {
+	listfile := make(map[string]string)
+	if len(listfilePath) == 0 {
+		return listfile, nil
+	}
+	if err := jsonutil.ParseFile(listfilePath, &listfile); err != nil {
+		return nil, errors.WithStack(err)
+	}
+	return listfile, nil
+}
+
+// replaceName replaces the given path by a corresponding new path if a
+// replacement was specified in the given listfile.
+func replaceName(path string, listfile map[string]string) string {
+	if newPath, ok := listfile[stripRootDumpDir(path)]; ok {
+		return filepath.Join(rootDumpDir, newPath)
+	}
+	return path
+}
+
+// stripRootDumpDir strips the root dump directory ("_dump_") from the prefix of
+// the given path.
+func stripRootDumpDir(path string) string {
+	parts := strings.Split(path, string(filepath.Separator))
+	if parts[0] != rootDumpDir {
+		panic(fmt.Errorf("invalid path root; expected root dump dir %q, got %q", rootDumpDir, parts[0]))
+	}
+	return filepath.Join(parts[1:]...)
 }

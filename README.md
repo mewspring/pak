@@ -13,7 +13,11 @@ go install ./cmd/zel_dump
 
 ```bash
 # Extract PAK archive.
-pak_dump X.PAK
+pak_dump -listfile listfile.json X.PAK
+```
+
+```bash
+zel_dump -pal _dump_/X/core/core.pal _dump_/X/path/to/image.zel
 ```
 
 ```bash

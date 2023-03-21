@@ -93,7 +93,8 @@ func parseFrame(frameContents []byte, pal color.Palette) (image.Image, bool) {
 	// sanity check.
 	// NOTE: 650 is a valid width of `archive_0012/archive_0005/frame_0000.png`.
 	// NOTE: 640 is a valid height of `archive_0012/archive_0001/frame_0165.png`.
-	if frameWidth == 0 || frameHeight == 0 || frameWidth > 1024 || frameHeight > 1024 {
+	// NOTE: 1037 is a valid width of `archive_0012/archive_0040/frame_0034.png`.
+	if frameWidth == 0 || frameHeight == 0 || frameWidth > 1280 || frameHeight > 1280 {
 		warn.Printf("sanity check failed; frameWidth=%d, frameHeight=%d\n%s", frameWidth, frameHeight, hex.Dump(frameContents))
 		return nil, false
 	}

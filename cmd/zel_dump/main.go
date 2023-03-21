@@ -62,7 +62,12 @@ func main() {
 func dumpZelImage(zelPath string, pal color.Palette) error {
 	imgs, err := zel.DecodeAll(zelPath, pal)
 	if err != nil {
-		return errors.WithStack(err)
+		if len(imgs) > 0 {
+			// print warning but continue to dump partial image results.
+			warn.Printf("decode error for %q; %+v", zelPath, err)
+		} else {
+			return errors.WithStack(err)
+		}
 	}
 	// create output directory.
 	dstDir := pathutil.TrimExt(zelPath)

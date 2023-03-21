@@ -4,6 +4,7 @@ package zel
 import (
 	"bytes"
 	"encoding/binary"
+	"encoding/hex"
 	"fmt"
 	"image"
 	"image/color"
@@ -36,39 +37,44 @@ var (
 // DecodeAll decodes the given ZEL image using colours from the provided
 // palette, and returns the sequential frames.
 func DecodeAll(zelPath string, pal color.Palette) (imgs []image.Image, err error) {
+	var (
+		curFrame int
+		nframes  int
+	)
 	defer func() {
 		if e := recover(); e != nil {
-			err = errors.Errorf("recovered panic in zel.DecodeAll: %v", e)
+			err = errors.Errorf("recovered panic in zel.DecodeAll for frame (%d/%d) of %q: %+v", curFrame, nframes, zelPath, e)
 		}
 	}()
 	buf, err := ioutil.ReadFile(zelPath)
 	if err != nil {
-		return nil, errors.WithStack(err)
+		return imgs, errors.WithStack(err)
 	}
 	dbg.Printf("parsing %q", zelPath)
 	// parse ZEL header.
 	zelHdrSize := int(binary.LittleEndian.Uint32(buf[0:4]))
 	r := bytes.NewReader(buf)
 	zelHdrReader := io.NewSectionReader(r, 0, int64(zelHdrSize))
-	nframes := zelHdrSize / 4
-	frameOffsets := make([]uint32, nframes)
+	frameOffsetsLen := zelHdrSize / 4
+	frameOffsets := make([]uint32, frameOffsetsLen)
 	if err := binary.Read(zelHdrReader, binary.LittleEndian, &frameOffsets); err != nil {
 		return nil, errors.WithStack(err)
 	}
-	if len(buf) != int(frameOffsets[len(frameOffsets)-1]) {
+	nframes = len(frameOffsets) - 1
+	if len(buf) != int(frameOffsets[nframes]) {
 		pretty.Println("frameOffsets:", frameOffsets)
-		panic(fmt.Errorf("mismatch between frameOffsets[%d]=%d and len(buf)=%d", len(frameOffsets)-1, frameOffsets[len(frameOffsets)-1], len(buf)))
+		panic(fmt.Errorf("mismatch between frameOffsets[%d]=%d and len(buf)=%d", nframes, frameOffsets[nframes], len(buf)))
 	}
 	// output ZEL frames.
-	for i := 0; i < len(frameOffsets)-1; i++ {
-		frameStartOffset := frameOffsets[i]
-		frameEndOffset := frameOffsets[i+1]
+	for curFrame = 0; curFrame < nframes; curFrame++ {
+		frameStartOffset := frameOffsets[curFrame]
+		frameEndOffset := frameOffsets[curFrame+1]
 		frameContents := buf[frameStartOffset:frameEndOffset:frameEndOffset]
 		img, ok := parseFrame(frameContents, pal)
 		if !ok {
-			//warn.Printf("skipping invalid frame (%d/%d) of %q", i, len(frameOffsets)-1, zelPath)
+			//warn.Printf("skipping invalid frame (%d/%d) of %q", curFrame, nframes, zelPath)
 			//continue // skip
-			return nil, errors.Errorf("unable to decode frame (%d/%d) of %q", i, len(frameOffsets)-1, zelPath)
+			return imgs, errors.Errorf("unable to decode frame (%d/%d) of %q", curFrame, nframes, zelPath)
 		}
 		imgs = append(imgs, img)
 	}
@@ -79,6 +85,7 @@ func DecodeAll(zelPath string, pal color.Palette) (imgs []image.Image, err error
 func parseFrame(frameContents []byte, pal color.Palette) (image.Image, bool) {
 	// parse ZEL frame.
 	if len(frameContents) == 0 {
+		warn.Printf("empty frame")
 		return image.NewRGBA(image.Rect(0, 0, 1, 1)), true // dummy 1x1 image used for empty frames
 	}
 	frameWidth := int(binary.LittleEndian.Uint16(frameContents[0:2]))
@@ -87,6 +94,7 @@ func parseFrame(frameContents []byte, pal color.Palette) (image.Image, bool) {
 	// NOTE: 650 is a valid width of `archive_0012/archive_0005/frame_0000.png`.
 	// NOTE: 640 is a valid height of `archive_0012/archive_0001/frame_0165.png`.
 	if frameWidth == 0 || frameHeight == 0 || frameWidth > 1024 || frameHeight > 1024 {
+		warn.Printf("sanity check failed; frameWidth=%d, frameHeight=%d\n%s", frameWidth, frameHeight, hex.Dump(frameContents))
 		return nil, false
 	}
 	dbg.Printf("frame dimensions: %dx%d", frameWidth, frameHeight)
@@ -99,6 +107,9 @@ func parseFrame(frameContents []byte, pal color.Palette) (image.Image, bool) {
 		pos += 2
 		//dbg.Printf("cmd: 0x%04X", cmd)
 		if cmd == 0 {
+			if pos < len(data) {
+				warn.Printf("unprocessed frame contents:\n%s", hex.Dump(data[pos:]))
+			}
 			break
 		}
 		switch {
@@ -130,7 +141,7 @@ func parseFrame(frameContents []byte, pal color.Palette) (image.Image, bool) {
 			}
 		}
 		if cmd&0x8000 != 0 {
-			// clear line
+			// clear line.
 			skip := (frameWidth - *total) % frameWidth // TODO: double-check that this is correct
 			//dbg.Printf("   clear line (skip=%d)", skip)
 			for j := 0; j < skip; j++ {

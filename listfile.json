@@ -3756,6 +3756,7 @@
 	"X/tilesets/archive_0083.pak": "X/tilesets/archive_0083.zel",
 
 	"X/archive_0013.pak": "X/sounds.pak",
+	"X/sounds/sound_0000.wav": "X/sounds/misc_wallloop.wav",
 	"X/sounds/sound_0003.wav": "X/sounds/misc_elementl.wav",
 	"X/sounds/sound_0004.wav": "X/sounds/misc_flamwave.wav",
 	"X/sounds/sound_0005.wav": "X/sounds/misc_holybolt.wav",

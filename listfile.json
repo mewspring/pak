@@ -1372,7 +1372,7 @@
 	"X/monsters/enchantress-infravision/death/archive_0006.pak": "X/monsters/enchantress-infravision/death/archive_dir_7.zel",
 	"X/monsters/enchantress-infravision/death/archive_0007.pak": "X/monsters/enchantress-infravision/death/archive_dir_8.zel",
 	"X/monsters/archive_0023.pak": "X/monsters/petalwitch-infravision.pak",
-	"X/monsters/petalwitch/archive_0001.pak": "X/monsters/petalwitch-infravision/neutral.pak",
+	"X/monsters/petalwitch-infravision/archive_0001.pak": "X/monsters/petalwitch-infravision/neutral.pak",
 	"X/monsters/petalwitch-infravision/neutral/archive_0000.pak": "X/monsters/petalwitch-infravision/neutral/archive_dir_1.zel",
 	"X/monsters/petalwitch-infravision/neutral/archive_0001.pak": "X/monsters/petalwitch-infravision/neutral/archive_dir_2.zel",
 	"X/monsters/petalwitch-infravision/neutral/archive_0002.pak": "X/monsters/petalwitch-infravision/neutral/archive_dir_3.zel",

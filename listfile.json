@@ -2200,6 +2200,7 @@
 	"X/monsters/wererat-infravision/death/archive_0006.pak": "X/monsters/wererat-infravision/death/archive_dir_7.zel",
 	"X/monsters/wererat-infravision/death/archive_0007.pak": "X/monsters/wererat-infravision/death/archive_dir_8.zel",
 	"X/monsters/archive_0041.pak": "X/monsters/gekkoborn-infravision.pak",
+	"X/monsters/gekkoborn-infravision/archive_0001.pak": "X/monsters/gekkoborn-infravision/neutral.pak",
 	"X/monsters/gekkoborn-infravision/neutral/archive_0000.pak": "X/monsters/gekkoborn-infravision/neutral/archive_dir_1.zel",
 	"X/monsters/gekkoborn-infravision/neutral/archive_0001.pak": "X/monsters/gekkoborn-infravision/neutral/archive_dir_2.zel",
 	"X/monsters/gekkoborn-infravision/neutral/archive_0002.pak": "X/monsters/gekkoborn-infravision/neutral/archive_dir_3.zel",

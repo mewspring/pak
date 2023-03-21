@@ -57,8 +57,15 @@ func main() {
 	}
 }
 
-// rootDumpDir specifies the top-level output directory.
-const rootDumpDir = "_dump_"
+const (
+	// rootDumpDir specifies the top-level output directory.
+	rootDumpDir = "_dump_"
+	// keepSubarchive specifies whether to keep PAK (sub)archives after
+	// extracting files.
+	//
+	// Note: the top level PAK archive is always kept.
+	keepSubarchive = false
+)
 
 // dumpPakArchive dumps the given PAK archive to the specified output directory.
 func dumpPakArchive(pakPath, dumpDir string, listfile map[string]string) error {
@@ -105,6 +112,12 @@ func dumpPakArchive(pakPath, dumpDir string, listfile map[string]string) error {
 	for _, subarchivePath := range subarchivePaths {
 		if err := dumpPakArchive(subarchivePath, dstDir, listfile); err != nil {
 			return errors.WithStack(err)
+		}
+		if !keepSubarchive {
+			// only keep extracted files of subarchive.
+			if err := os.Remove(subarchivePath); err != nil {
+				return errors.WithStack(err)
+			}
 		}
 	}
 	return nil

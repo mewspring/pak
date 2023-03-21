@@ -82,6 +82,10 @@ func dumpPakArchive(pakPath, dumpDir string, listfile map[string]string) error {
 	if err := os.MkdirAll(dstDir, 0o755); err != nil {
 		return errors.WithStack(err)
 	}
+	reverseListfile := make(map[string]string)
+	for key, val := range listfile {
+		reverseListfile[val] = key
+	}
 	// output PAK subarchives (and files).
 	var subarchivePaths []string
 	for i, fileContents := range filesContents {
@@ -113,7 +117,11 @@ func dumpPakArchive(pakPath, dumpDir string, listfile map[string]string) error {
 		if err := dumpPakArchive(subarchivePath, dstDir, listfile); err != nil {
 			return errors.WithStack(err)
 		}
-		if !keepSubarchive {
+		// Only remove subarchive if present in listfile. If not present, it's
+		// probably a ZEL file that's not yet successfully decoded by zel_dump or
+		// a subdirectory that has not yet been named.
+		_, inListfile := reverseListfile[stripRootDumpDir(subarchivePath)]
+		if !keepSubarchive && inListfile {
 			// only keep extracted files of subarchive.
 			if err := os.Remove(subarchivePath); err != nil {
 				return errors.WithStack(err)

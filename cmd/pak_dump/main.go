@@ -102,7 +102,13 @@ func dumpPakArchive(pakPath, dumpDir string, listfile map[string]string) error {
 		}
 		dstName := fmt.Sprintf("%s_%04d.%s", name, i, ext)
 		dstPath := filepath.Join(dstDir, dstName)
-		dstPath = replaceName(dstPath, listfile)
+		if len(listfile) > 0 {
+			if newPathName, ok := replaceName(dstPath, listfile); ok {
+				dstPath = newPathName
+			} else {
+				warn.Printf("file name not set for %q in listfile", dstPath)
+			}
+		}
 		dbg.Printf("creating %q", dstPath)
 		if err := ioutil.WriteFile(dstPath, fileContents, 0o644); err != nil {
 			return errors.WithStack(err)
@@ -167,11 +173,11 @@ func parseListfile(listfilePath string) (map[string]string, error) {
 
 // replaceName replaces the given path by a corresponding new path if a
 // replacement was specified in the given listfile.
-func replaceName(path string, listfile map[string]string) string {
+func replaceName(path string, listfile map[string]string) (string, bool) {
 	if newPath, ok := listfile[stripRootDumpDir(path)]; ok {
-		return filepath.Join(rootDumpDir, newPath)
+		return filepath.Join(rootDumpDir, newPath), true
 	}
-	return path
+	return path, false
 }
 
 // stripRootDumpDir strips the root dump directory ("_dump_") from the prefix of

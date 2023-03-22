@@ -13,6 +13,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"strings"
 
 	"github.com/kr/pretty"
 	"github.com/mewkiz/pkg/term"
@@ -70,7 +71,8 @@ func DecodeAll(zelPath string, pal color.Palette) (imgs []image.Image, err error
 		frameStartOffset := frameOffsets[curFrame]
 		frameEndOffset := frameOffsets[curFrame+1]
 		frameContents := buf[frameStartOffset:frameEndOffset:frameEndOffset]
-		img, ok := parseFrame(frameContents, pal)
+		type4 := isType4(zelPath)
+		img, ok := parseFrame(frameContents, pal, type4)
 		if !ok {
 			//warn.Printf("skipping invalid frame (%d/%d) of %q", curFrame, nframes, zelPath)
 			//continue // skip
@@ -82,7 +84,7 @@ func DecodeAll(zelPath string, pal color.Palette) (imgs []image.Image, err error
 }
 
 // parseFrame parses the given ZEL frame contents.
-func parseFrame(frameContents []byte, pal color.Palette) (image.Image, bool) {
+func parseFrame(frameContents []byte, pal color.Palette, type4 bool) (image.Image, bool) {
 	// parse ZEL frame.
 	if len(frameContents) == 0 {
 		warn.Printf("empty frame")
@@ -125,12 +127,25 @@ func parseFrame(frameContents []byte, pal color.Palette) (image.Image, bool) {
 		case cmd&0x1000 != 0:
 			// regular pixels.
 			npixels := int(cmd & 0xFFF)
-			//dbg.Printf("   regular pixels (npixels=%d)", npixels)
-			for j := 0; j < npixels; j++ {
-				palIndex := data[pos]
-				//dbg.Printf("      regular pixel 0x%02X", palIndex)
-				pos++
-				drawPixel(pal[palIndex])
+			switch {
+			case type4:
+				// Tileset shadows (using constant palette index 8).
+				//
+				//    "X/tilesets/archive_NNNN.zel" where (NNNN%4 == 0)
+				//dbg.Printf("   constant pixels (npixels=%d)", npixels)
+				for j := 0; j < npixels; j++ {
+					const palIndex = 8
+					//dbg.Printf("      constant pixel 0x%02X", palIndex)
+					drawPixel(pal[palIndex])
+				}
+			default:
+				//dbg.Printf("   regular pixels (npixels=%d)", npixels)
+				for j := 0; j < npixels; j++ {
+					palIndex := data[pos]
+					//dbg.Printf("      regular pixel 0x%02X", palIndex)
+					pos++
+					drawPixel(pal[palIndex])
+				}
 			}
 		default:
 			// transparent pixels.
@@ -178,4 +193,39 @@ func pixelDrawer(dst draw.Image, w, h int) (func(color.Color), *int) {
 			y++
 		}
 	}, &total
+}
+
+// isType4 reports whether the given ZEL is a type 4 tileset ZEL image (used for
+// tileset shadows).
+func isType4(zelPath string) bool {
+	zelPath = strings.ReplaceAll(zelPath, `\`, "/")
+	const rootDir = "X/"
+	pos := strings.Index(zelPath, rootDir)
+	if pos == -1 {
+		panic(fmt.Errorf("unable to find root directory %q in %q", rootDir, zelPath))
+	}
+	zelPath = zelPath[pos:]
+	return isType4TilesetZel[zelPath]
+}
+
+// isType4TilesetZel reports whether the given ZEL is a type 4 tileset ZEL
+// image (used for tileset shadows).
+var isType4TilesetZel = map[string]bool{
+	"X/tilesets/tileset_1_shadow.zel":  true,
+	"X/tilesets/tileset_2_shadow.zel":  true,
+	"X/tilesets/tileset_3_shadow.zel":  true,
+	"X/tilesets/tileset_4_shadow.zel":  true,
+	"X/tilesets/tileset_5_shadow.zel":  true,
+	"X/tilesets/tileset_6_shadow.zel":  true,
+	"X/tilesets/tileset_7_shadow.zel":  true,
+	"X/tilesets/tileset_8_shadow.zel":  true,
+	"X/tilesets/tileset_9_shadow.zel":  true,
+	"X/tilesets/tileset_10_shadow.zel": true,
+	"X/tilesets/tileset_11_shadow.zel": true,
+	"X/tilesets/tileset_12_shadow.zel": true,
+	"X/tilesets/tileset_13_shadow.zel": true,
+	"X/tilesets/tileset_14_shadow.zel": true,
+	"X/tilesets/tileset_15_shadow.zel": true,
+	"X/tilesets/tileset_16_shadow.zel": true,
+	"X/tilesets/tileset_17_shadow.zel": true,
 }

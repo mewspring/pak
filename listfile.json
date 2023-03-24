@@ -6,7 +6,7 @@
 	"X/archive_0001.pak": "X/cursors.pak",
 	"X/cursors/archive_0000.pak": "X/cursors/hand.zel",
 	"X/cursors/file_0001.bin": "X/cursors/light_table_256x32.data",
-	"X/cursors/file_0002.bin": "X/cursors/viewport_light_radious_640x416.data",
+	"X/cursors/file_0002.bin": "X/cursors/viewport_light_radius_640x416.data",
 	"X/cursors/archive_0003.pak": "X/cursors/debug_square.zel",
 	"X/cursors/archive_0004.pak": "X/cursors/items.zel",
 	"X/cursors/file_0005.bin": "X/cursors/tile_mask_64x32.data",

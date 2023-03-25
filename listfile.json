@@ -83,7 +83,7 @@
 	"X/ui_art/archive_0066.pak": "X/ui_art/lore_screen_4.zel",
 	"X/ui_art/archive_0067.pak": "X/ui_art/lore_screen_5.zel",
 
-	"X/archive_0003.pak": "X/tilesets_floors.pak",
+	"X/archive_0003.pak": "X/base_floor_tileset.zel",
 
 	"X/archive_0004.pak": "X/tilesets_walls.pak",
 	"X/tilesets_walls/archive_0000.pak": "X/tilesets_walls/tileset_1_walls.zel",

@@ -3,6 +3,7 @@ module github.com/mewspring/pak
 go 1.21
 
 require (
+	github.com/Noofbiz/tmx v0.2.0
 	github.com/kr/pretty v0.3.1
 	github.com/mewkiz/pkg v0.0.0-20230226050401-4010bf0fec14
 	github.com/pkg/errors v0.9.1

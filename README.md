@@ -20,3 +20,8 @@ pak_dump -listfile listfile.json X.PAK
 # Convert ZEL images to PNG format.
 find ./_dump_/X -type f -name "*.zel" -exec zel_dump -pal _dump_/X/core/core.pal {} \;
 ```
+
+```bash
+# Convert MAP files to TMX format.
+map_dump _dump_/X/tilesets/map_*.map
+```

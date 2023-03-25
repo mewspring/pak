@@ -27,27 +27,30 @@ const signature = "MAP\x00"
 // Map holds the contents of a MAP file.
 type Map struct {
 	// File format signature "MAP\x00"
-	Magic     [4]byte
-	Field0004 uint32
-	Field0008 uint8
+	Magic           [4]byte
+	Unused0004      uint32
+	RenderWithLight uint8
 	// Walls tileset ID.
 	//
 	// Subfile index of X/tilesets_walls/tileset_NNNN_walls.zel
 	WallsTilesetID uint32
 	// Collisions of the map.
 	SolidMap [128][128]uint8
-	// Frame indices of the map.
-	FrameMap [128][128]uint16
-	// Tileset 0 holds stairs and mountains.
+	// Floor tile frame indices of the map.
+	//
+	//    frame >= 0: use tileset floors (X/tilesets_floors.zel)
+	//    else:       use tileset type 2 (X/tilesets/tileset_NNN_floors.zel)
+	FloorFrameMap [128][128]uint16
+	// Tileset type 0 holds stairs and mountains.
 	// ntileset0Elems uint32
 	Tileset0Elems []MapTile // len: ntileset0Elems
-	// Tileset 4 holds shadows.
+	// Tileset type 4 holds shadows.
 	// ntileset4Elems uint32
 	Tileset4Elems []MapTile // len: ntileset4Elems
-	// Tileset 1 holds walls and buildings.
+	// Tileset type 1 holds walls and buildings.
 	// ntileset1Elems uint32 // in range [0, 4096)
 	Tileset1Elems []MapTile2 // len: ntileset1Elems
-	// Tileset 3 holds objects.
+	// Tileset type 3 holds objects.
 	// ntileset3Elems uint32 // in range [0, 4096)
 	Tileset3Elems []MapTile2 // len: ntileset3Elems
 	// Tileset walls (of archive 4).
@@ -87,14 +90,14 @@ func ParseFile(mapPath string) (*Map, error) {
 		return nil, errors.Errorf("invalid MAP signature of %q; expected %q, got %q", mapPath, signature, magic)
 	}
 	dbg.Println("magic:", magic)
-	if err := binary.Read(r, binary.LittleEndian, &m.Field0004); err != nil {
+	if err := binary.Read(r, binary.LittleEndian, &m.Unused0004); err != nil {
 		return nil, errors.WithStack(err)
 	}
-	dbg.Printf("m.Field0004: 0x%08X", m.Field0004)
-	if err := binary.Read(r, binary.LittleEndian, &m.Field0008); err != nil {
+	dbg.Printf("m.Unused0004: 0x%08X", m.Unused0004)
+	if err := binary.Read(r, binary.LittleEndian, &m.RenderWithLight); err != nil {
 		return nil, errors.WithStack(err)
 	}
-	dbg.Printf("m.Field0008: 0x%02X", m.Field0008)
+	dbg.Printf("m.RenderWithLight: 0x%02X", m.RenderWithLight)
 	if err := binary.Read(r, binary.LittleEndian, &m.WallsTilesetID); err != nil {
 		return nil, errors.WithStack(err)
 	}
@@ -103,10 +106,10 @@ func ParseFile(mapPath string) (*Map, error) {
 		return nil, errors.WithStack(err)
 	}
 	dbg.Printf("m.SolidMap:\n%v", m.SolidMap)
-	if err := binary.Read(r, binary.LittleEndian, &m.FrameMap); err != nil {
+	if err := binary.Read(r, binary.LittleEndian, &m.FloorFrameMap); err != nil {
 		return nil, errors.WithStack(err)
 	}
-	dbg.Printf("m.FrameMap:\n%v", m.FrameMap)
+	dbg.Printf("m.FloorFrameMap:\n%v", m.FloorFrameMap)
 	// Tileset 0 (stairs and mountains).
 	var ntileset0Elems uint32
 	if err := binary.Read(r, binary.LittleEndian, &ntileset0Elems); err != nil {

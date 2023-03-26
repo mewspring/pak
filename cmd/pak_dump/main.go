@@ -102,6 +102,10 @@ func dumpPakArchive(pakPath, dumpDir string, listfile map[string]string) error {
 		}
 		dstName := fmt.Sprintf("%s_%04d.%s", name, i, ext)
 		dstPath := filepath.Join(dstDir, dstName)
+		if len(fileContents) == 0 {
+			//dbg.Println("skip empty file %q", dstPath)
+			continue
+		}
 		if len(listfile) > 0 {
 			if newPathName, ok := replaceName(dstPath, listfile); ok {
 				dstPath = newPathName

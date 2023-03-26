@@ -41,13 +41,13 @@ type Map struct {
 	//    frame >= 0: use base floors tileset (X/base_floors_tileset.zel)
 	//    else:       use tileset type 2      (X/tilesets/tileset_NNN_floors.zel)
 	FloorFrameMap [128][128]uint16
-	// Tileset type 0 holds stairs and mountains
+	// Tileset type 0 holds backgrounds overlays (e.g. stairs and mountains).
 	//
-	//	X/tilesets/tileset_NNN_mountains_and_stairs.zel
+	//	X/tilesets/tileset_NNN_backgrounds.zel
 	//
-	// nmountains uint32
-	Mountains []MapOverlay // len: nmountains
-	// Tileset type 4 holds shadows.
+	// nbackgrounds uint32
+	Backgrounds []MapOverlay // len: nbackgrounds
+	// Tileset type 4 holds shadows overlays.
 	//
 	//	X/tilesets/tileset_NNN_shadows.zel
 	//
@@ -132,18 +132,18 @@ func ParseFile(mapPath string) (*Map, error) {
 		return nil, errors.WithStack(err)
 	}
 	//dbg.Printf("m.FloorFrameMap:\n%v", m.FloorFrameMap)
-	// Tileset 0 (stairs and mountains).
-	var nmountains uint32
-	if err := binary.Read(r, binary.LittleEndian, &nmountains); err != nil {
+	// Tileset 0 (backgrounds).
+	var nbackgrounds uint32
+	if err := binary.Read(r, binary.LittleEndian, &nbackgrounds); err != nil {
 		return nil, errors.WithStack(err)
 	}
-	m.Mountains = make([]MapOverlay, int(nmountains))
-	if err := binary.Read(r, binary.LittleEndian, &m.Mountains); err != nil {
+	m.Backgrounds = make([]MapOverlay, int(nbackgrounds))
+	if err := binary.Read(r, binary.LittleEndian, &m.Backgrounds); err != nil {
 		return nil, errors.WithStack(err)
 	}
-	dbg.Println("m.Mountains (stairs and mountains):")
-	for _, mountain := range m.Mountains {
-		dbg.Println("   mountain:", mountain)
+	dbg.Println("m.Backgrounds (stairs and mountains):")
+	for _, background := range m.Backgrounds {
+		dbg.Println("   background:", background)
 	}
 	// Tileset 4 (shadows).
 	var nshadows uint32

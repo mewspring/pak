@@ -23,11 +23,11 @@ find ./_dump_/X -type f -name "*.zel" -exec zel_dump -pal _dump_/X/core/core.pal
 ```
 
 ```bash
-# Convert MAP files to TMX format.
-map_dump _dump_/X/tilesets/map_*.map
+# Generate tileset sprite sheets.
+./_scripts_/gen_tilesets.sh
 ```
 
 ```bash
-# Generate tileset sprite sheets.
-./_scripts_/gen_tilesets.sh
+# Convert MAP files to TMX format.
+map_dump _dump_/X/tilesets/map_*.map
 ```

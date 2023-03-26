@@ -224,7 +224,7 @@ func addLayers(tmxMap *tmx.Map, m *maps.Map) {
 		if !ok {
 			return 0
 		}
-		dbg.Println("baseWallFrame:", baseWallFrame)
+		//dbg.Println("baseWallFrame:", baseWallFrame)
 		base := getBaseWallBaseTileID(m)
 		tiledTileID := base + baseWallFrame
 		return tiledTileID
@@ -249,25 +249,23 @@ func addLayers(tmxMap *tmx.Map, m *maps.Map) {
 	}
 	addLayer(tmxMap, objectsLayerName, objectsTiledTileIDAt)
 
-	// TODO: figure out why buildings layer is broken.
-
 	// Buildings layer.
-	//const buildingsLayerName = "buildings"
-	//buildingFrameAt := make(map[Coordinate]int)
-	//for _, building := range m.Buildings {
-	//	buildingFrameAt[Coord(int(building.X), int(building.Y))] = int(building.Frame)
-	//}
-	//buildingsTiledTileIDAt := func(x, y int) int {
-	//	buildingFrame, ok := buildingFrameAt[Coord(x, y)]
-	//	if !ok {
-	//		return 0
-	//	}
-	//	//dbg.Println("buildingFrame:", buildingFrame)
-	//	const base = tileset2BuildingBaseTileID // TODO: add support for tileset_NNN/ type.
-	//	tiledTileID := base + buildingFrame
-	//	return tiledTileID
-	//}
-	//addLayer(tmxMap, buildingsLayerName, buildingsTiledTileIDAt)
+	const buildingsLayerName = "buildings"
+	buildingFrameAt := make(map[Coordinate]int)
+	for _, building := range m.Buildings {
+		buildingFrameAt[Coord(int(building.X), int(building.Y))] = int(building.Frame)
+	}
+	buildingsTiledTileIDAt := func(x, y int) int {
+		buildingFrame, ok := buildingFrameAt[Coord(x, y)]
+		if !ok {
+			return 0
+		}
+		//dbg.Println("buildingFrame:", buildingFrame)
+		const base = tileset2BuildingBaseTileID // TODO: add support for tileset_NNN/ type.
+		tiledTileID := base + buildingFrame
+		return tiledTileID
+	}
+	addLayer(tmxMap, buildingsLayerName, buildingsTiledTileIDAt)
 }
 
 // addLayer adds the layer as specified to the given TMX map.

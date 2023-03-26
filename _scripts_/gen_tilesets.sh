@@ -22,7 +22,7 @@ done
 
 echo 'Creating "_assets_/tilesets/base_floors.png"'
 montage \
-	_dump_/X/base_floor_tileset/frame_*.png \
+	_dump_/X/base_floors_tileset/frame_*.png \
 	-tile 12x \
 	-background none \
 	-gravity south \

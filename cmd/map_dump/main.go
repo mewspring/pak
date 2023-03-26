@@ -64,60 +64,68 @@ const (
 const (
 	// base floors.
 	baseFloorBaseTileID = 0 + 1 // X/base_floors_tileset.zel
+	// base walls.
+	baseWalls1BaseTileID = 200_000*0 + 1*10_000 + 1 // X/base_walls/base_walls_tileset/base_walls_1.zel
+	baseWalls2BaseTileID = 200_000*0 + 2*10_000 + 1 // X/base_walls/base_walls_tileset/base_walls_2.zel
+	baseWalls3BaseTileID = 200_000*0 + 3*10_000 + 1 // X/base_walls/base_walls_tileset/base_walls_3.zel
+	baseWalls4BaseTileID = 200_000*0 + 4*10_000 + 1 // X/base_walls/base_walls_tileset/base_walls_4.zel
+	baseWalls5BaseTileID = 200_000*0 + 5*10_000 + 1 // X/base_walls/base_walls_tileset/base_walls_5.zel
+	baseWalls6BaseTileID = 200_000*0 + 6*10_000 + 1 // X/base_walls/base_walls_tileset/base_walls_6.zel
+	baseWalls7BaseTileID = 200_000*0 + 7*10_000 + 1 // X/base_walls/base_walls_tileset/base_walls_7.zel
 	// floors.
-	tileset1FloorBaseTileID  = 200_000*0 + 1*10_000 + 1  // X/tilesets/tileset_1_floors.zel
-	tileset2FloorBaseTileID  = 200_000*0 + 2*10_000 + 1  // X/tilesets/tileset_2_floors.zel
-	tileset3FloorBaseTileID  = 200_000*0 + 3*10_000 + 1  // X/tilesets/tileset_3_floors.zel
-	tileset4FloorBaseTileID  = 200_000*0 + 4*10_000 + 1  // X/tilesets/tileset_4_floors.zel
-	tileset5FloorBaseTileID  = 200_000*0 + 5*10_000 + 1  // X/tilesets/tileset_5_floors.zel
-	tileset6FloorBaseTileID  = 200_000*0 + 6*10_000 + 1  // X/tilesets/tileset_6_floors.zel
-	tileset7FloorBaseTileID  = 200_000*0 + 7*10_000 + 1  // X/tilesets/tileset_7_floors.zel
-	tileset8FloorBaseTileID  = 200_000*0 + 8*10_000 + 1  // X/tilesets/tileset_8_floors.zel
-	tileset9FloorBaseTileID  = 200_000*0 + 9*10_000 + 1  // X/tilesets/tileset_9_floors.zel
-	tileset10FloorBaseTileID = 200_000*0 + 10*10_000 + 1 // X/tilesets/tileset_10_floors.zel
-	tileset11FloorBaseTileID = 200_000*0 + 11*10_000 + 1 // X/tilesets/tileset_11_floors.zel
-	tileset12FloorBaseTileID = 200_000*0 + 12*10_000 + 1 // X/tilesets/tileset_12_floors.zel
-	tileset13FloorBaseTileID = 200_000*0 + 13*10_000 + 1 // X/tilesets/tileset_13_floors.zel
-	tileset14FloorBaseTileID = 200_000*0 + 14*10_000 + 1 // X/tilesets/tileset_14_floors.zel
-	tileset15FloorBaseTileID = 200_000*0 + 15*10_000 + 1 // X/tilesets/tileset_15_floors.zel
-	tileset16FloorBaseTileID = 200_000*0 + 16*10_000 + 1 // X/tilesets/tileset_16_floors.zel
-	tileset17FloorBaseTileID = 200_000*0 + 17*10_000 + 1 // X/tilesets/tileset_17_floors.zel
+	tileset1FloorBaseTileID  = 200_000*1 + 1*10_000 + 1  // X/tilesets/tileset_1_floors.zel
+	tileset2FloorBaseTileID  = 200_000*1 + 2*10_000 + 1  // X/tilesets/tileset_2_floors.zel
+	tileset3FloorBaseTileID  = 200_000*1 + 3*10_000 + 1  // X/tilesets/tileset_3_floors.zel
+	tileset4FloorBaseTileID  = 200_000*1 + 4*10_000 + 1  // X/tilesets/tileset_4_floors.zel
+	tileset5FloorBaseTileID  = 200_000*1 + 5*10_000 + 1  // X/tilesets/tileset_5_floors.zel
+	tileset6FloorBaseTileID  = 200_000*1 + 6*10_000 + 1  // X/tilesets/tileset_6_floors.zel
+	tileset7FloorBaseTileID  = 200_000*1 + 7*10_000 + 1  // X/tilesets/tileset_7_floors.zel
+	tileset8FloorBaseTileID  = 200_000*1 + 8*10_000 + 1  // X/tilesets/tileset_8_floors.zel
+	tileset9FloorBaseTileID  = 200_000*1 + 9*10_000 + 1  // X/tilesets/tileset_9_floors.zel
+	tileset10FloorBaseTileID = 200_000*1 + 10*10_000 + 1 // X/tilesets/tileset_10_floors.zel
+	tileset11FloorBaseTileID = 200_000*1 + 11*10_000 + 1 // X/tilesets/tileset_11_floors.zel
+	tileset12FloorBaseTileID = 200_000*1 + 12*10_000 + 1 // X/tilesets/tileset_12_floors.zel
+	tileset13FloorBaseTileID = 200_000*1 + 13*10_000 + 1 // X/tilesets/tileset_13_floors.zel
+	tileset14FloorBaseTileID = 200_000*1 + 14*10_000 + 1 // X/tilesets/tileset_14_floors.zel
+	tileset15FloorBaseTileID = 200_000*1 + 15*10_000 + 1 // X/tilesets/tileset_15_floors.zel
+	tileset16FloorBaseTileID = 200_000*1 + 16*10_000 + 1 // X/tilesets/tileset_16_floors.zel
+	tileset17FloorBaseTileID = 200_000*1 + 17*10_000 + 1 // X/tilesets/tileset_17_floors.zel
 	// objects.
-	tileset1ObjectBaseTileID  = 200_000*1 + 1*10_000 + 1  // X/tilesets/tileset_1_objects.zel
-	tileset2ObjectBaseTileID  = 200_000*1 + 2*10_000 + 1  // X/tilesets/tileset_2_objects.zel
-	tileset3ObjectBaseTileID  = 200_000*1 + 3*10_000 + 1  // X/tilesets/tileset_3_objects.zel
-	tileset4ObjectBaseTileID  = 200_000*1 + 4*10_000 + 1  // X/tilesets/tileset_4_objects.zel
-	tileset5ObjectBaseTileID  = 200_000*1 + 5*10_000 + 1  // X/tilesets/tileset_5_objects.zel
-	tileset6ObjectBaseTileID  = 200_000*1 + 6*10_000 + 1  // X/tilesets/tileset_6_objects.zel
-	tileset7ObjectBaseTileID  = 200_000*1 + 7*10_000 + 1  // X/tilesets/tileset_7_objects.zel
-	tileset8ObjectBaseTileID  = 200_000*1 + 8*10_000 + 1  // X/tilesets/tileset_8_objects.zel
-	tileset9ObjectBaseTileID  = 200_000*1 + 9*10_000 + 1  // X/tilesets/tileset_9_objects.zel
-	tileset10ObjectBaseTileID = 200_000*1 + 10*10_000 + 1 // X/tilesets/tileset_10_objects.zel
-	tileset11ObjectBaseTileID = 200_000*1 + 11*10_000 + 1 // X/tilesets/tileset_11_objects.zel
-	tileset12ObjectBaseTileID = 200_000*1 + 12*10_000 + 1 // X/tilesets/tileset_12_objects.zel
-	tileset13ObjectBaseTileID = 200_000*1 + 13*10_000 + 1 // X/tilesets/tileset_13_objects.zel
-	tileset14ObjectBaseTileID = 200_000*1 + 14*10_000 + 1 // X/tilesets/tileset_14_objects.zel
-	tileset15ObjectBaseTileID = 200_000*1 + 15*10_000 + 1 // X/tilesets/tileset_15_objects.zel
-	tileset16ObjectBaseTileID = 200_000*1 + 16*10_000 + 1 // X/tilesets/tileset_16_objects.zel
-	tileset17ObjectBaseTileID = 200_000*1 + 17*10_000 + 1 // X/tilesets/tileset_17_objects.zel
+	tileset1ObjectBaseTileID  = 200_000*2 + 1*10_000 + 1  // X/tilesets/tileset_1_objects.zel
+	tileset2ObjectBaseTileID  = 200_000*2 + 2*10_000 + 1  // X/tilesets/tileset_2_objects.zel
+	tileset3ObjectBaseTileID  = 200_000*2 + 3*10_000 + 1  // X/tilesets/tileset_3_objects.zel
+	tileset4ObjectBaseTileID  = 200_000*2 + 4*10_000 + 1  // X/tilesets/tileset_4_objects.zel
+	tileset5ObjectBaseTileID  = 200_000*2 + 5*10_000 + 1  // X/tilesets/tileset_5_objects.zel
+	tileset6ObjectBaseTileID  = 200_000*2 + 6*10_000 + 1  // X/tilesets/tileset_6_objects.zel
+	tileset7ObjectBaseTileID  = 200_000*2 + 7*10_000 + 1  // X/tilesets/tileset_7_objects.zel
+	tileset8ObjectBaseTileID  = 200_000*2 + 8*10_000 + 1  // X/tilesets/tileset_8_objects.zel
+	tileset9ObjectBaseTileID  = 200_000*2 + 9*10_000 + 1  // X/tilesets/tileset_9_objects.zel
+	tileset10ObjectBaseTileID = 200_000*2 + 10*10_000 + 1 // X/tilesets/tileset_10_objects.zel
+	tileset11ObjectBaseTileID = 200_000*2 + 11*10_000 + 1 // X/tilesets/tileset_11_objects.zel
+	tileset12ObjectBaseTileID = 200_000*2 + 12*10_000 + 1 // X/tilesets/tileset_12_objects.zel
+	tileset13ObjectBaseTileID = 200_000*2 + 13*10_000 + 1 // X/tilesets/tileset_13_objects.zel
+	tileset14ObjectBaseTileID = 200_000*2 + 14*10_000 + 1 // X/tilesets/tileset_14_objects.zel
+	tileset15ObjectBaseTileID = 200_000*2 + 15*10_000 + 1 // X/tilesets/tileset_15_objects.zel
+	tileset16ObjectBaseTileID = 200_000*2 + 16*10_000 + 1 // X/tilesets/tileset_16_objects.zel
+	tileset17ObjectBaseTileID = 200_000*2 + 17*10_000 + 1 // X/tilesets/tileset_17_objects.zel
 	// buildings.
-	tileset1BuildingBaseTileID  = 200_000*2 + 1*10_000 + 1  // X/tilesets/tileset_1_buildings.zel
-	tileset2BuildingBaseTileID  = 200_000*2 + 2*10_000 + 1  // X/tilesets/tileset_2_buildings.zel
-	tileset3BuildingBaseTileID  = 200_000*2 + 3*10_000 + 1  // X/tilesets/tileset_3_buildings.zel
-	tileset4BuildingBaseTileID  = 200_000*2 + 4*10_000 + 1  // X/tilesets/tileset_4_buildings.zel
-	tileset5BuildingBaseTileID  = 200_000*2 + 5*10_000 + 1  // X/tilesets/tileset_5_buildings.zel
-	tileset6BuildingBaseTileID  = 200_000*2 + 6*10_000 + 1  // X/tilesets/tileset_6_buildings.zel
-	tileset7BuildingBaseTileID  = 200_000*2 + 7*10_000 + 1  // X/tilesets/tileset_7_buildings.zel
-	tileset8BuildingBaseTileID  = 200_000*2 + 8*10_000 + 1  // X/tilesets/tileset_8_buildings.zel
-	tileset9BuildingBaseTileID  = 200_000*2 + 9*10_000 + 1  // X/tilesets/tileset_9_buildings.zel
-	tileset10BuildingBaseTileID = 200_000*2 + 10*10_000 + 1 // X/tilesets/tileset_10_buildings.zel
-	tileset11BuildingBaseTileID = 200_000*2 + 11*10_000 + 1 // X/tilesets/tileset_11_buildings.zel
-	tileset12BuildingBaseTileID = 200_000*2 + 12*10_000 + 1 // X/tilesets/tileset_12_buildings.zel
-	tileset13BuildingBaseTileID = 200_000*2 + 13*10_000 + 1 // X/tilesets/tileset_13_buildings.zel
-	tileset14BuildingBaseTileID = 200_000*2 + 14*10_000 + 1 // X/tilesets/tileset_14_buildings.zel
-	tileset15BuildingBaseTileID = 200_000*2 + 15*10_000 + 1 // X/tilesets/tileset_15_buildings.zel
-	tileset16BuildingBaseTileID = 200_000*2 + 16*10_000 + 1 // X/tilesets/tileset_16_buildings.zel
-	tileset17BuildingBaseTileID = 200_000*2 + 17*10_000 + 1 // X/tilesets/tileset_17_buildings.zel
+	tileset1BuildingBaseTileID  = 200_000*3 + 1*10_000 + 1  // X/tilesets/tileset_1_buildings.zel
+	tileset2BuildingBaseTileID  = 200_000*3 + 2*10_000 + 1  // X/tilesets/tileset_2_buildings.zel
+	tileset3BuildingBaseTileID  = 200_000*3 + 3*10_000 + 1  // X/tilesets/tileset_3_buildings.zel
+	tileset4BuildingBaseTileID  = 200_000*3 + 4*10_000 + 1  // X/tilesets/tileset_4_buildings.zel
+	tileset5BuildingBaseTileID  = 200_000*3 + 5*10_000 + 1  // X/tilesets/tileset_5_buildings.zel
+	tileset6BuildingBaseTileID  = 200_000*3 + 6*10_000 + 1  // X/tilesets/tileset_6_buildings.zel
+	tileset7BuildingBaseTileID  = 200_000*3 + 7*10_000 + 1  // X/tilesets/tileset_7_buildings.zel
+	tileset8BuildingBaseTileID  = 200_000*3 + 8*10_000 + 1  // X/tilesets/tileset_8_buildings.zel
+	tileset9BuildingBaseTileID  = 200_000*3 + 9*10_000 + 1  // X/tilesets/tileset_9_buildings.zel
+	tileset10BuildingBaseTileID = 200_000*3 + 10*10_000 + 1 // X/tilesets/tileset_10_buildings.zel
+	tileset11BuildingBaseTileID = 200_000*3 + 11*10_000 + 1 // X/tilesets/tileset_11_buildings.zel
+	tileset12BuildingBaseTileID = 200_000*3 + 12*10_000 + 1 // X/tilesets/tileset_12_buildings.zel
+	tileset13BuildingBaseTileID = 200_000*3 + 13*10_000 + 1 // X/tilesets/tileset_13_buildings.zel
+	tileset14BuildingBaseTileID = 200_000*3 + 14*10_000 + 1 // X/tilesets/tileset_14_buildings.zel
+	tileset15BuildingBaseTileID = 200_000*3 + 15*10_000 + 1 // X/tilesets/tileset_15_buildings.zel
+	tileset16BuildingBaseTileID = 200_000*3 + 16*10_000 + 1 // X/tilesets/tileset_16_buildings.zel
+	tileset17BuildingBaseTileID = 200_000*3 + 17*10_000 + 1 // X/tilesets/tileset_17_buildings.zel
 )
 
 const outputDir = "_assets_"
@@ -158,7 +166,8 @@ func convertMapToTmx(m *maps.Map) *tmx.Map {
 	//}
 	// Create TMX map.
 	tmxMap := &tmx.Map{
-		Orientation: "isometric",
+		Orientation: "staggered", // isometric(staggered)
+		StaggerAxis: "x",
 		Width:       mapWidth,
 		Height:      mapHeight,
 		TileWidth:   mapTileWidth,
@@ -203,6 +212,24 @@ func addLayers(tmxMap *tmx.Map, m *maps.Map) {
 		return tiledTileID
 	}
 	addLayer(tmxMap, floorsLayerName, floorsTiledTileIDAt)
+
+	// Base walls layer.
+	const baseWallsLayerName = "base_walls"
+	baseWallFrameAt := make(map[Coordinate]int)
+	for _, baseWall := range m.BaseWalls {
+		baseWallFrameAt[Coord(int(baseWall.X), int(baseWall.Y))] = int(baseWall.Frame)
+	}
+	baseWallsTiledTileIDAt := func(x, y int) int {
+		baseWallFrame, ok := baseWallFrameAt[Coord(x, y)]
+		if !ok {
+			return 0
+		}
+		dbg.Println("baseWallFrame:", baseWallFrame)
+		base := getBaseWallBaseTileID(m)
+		tiledTileID := base + baseWallFrame
+		return tiledTileID
+	}
+	addLayer(tmxMap, baseWallsLayerName, baseWallsTiledTileIDAt)
 
 	// Objects layer.
 	const objectsLayerName = "objects"
@@ -284,149 +311,217 @@ type TilesetInfo struct {
 	BaseTileID        int
 }
 
-// tilesetInfos specifies the tileset info of
+// tilesetInfos specifies the name and dimensions of the following tilesets:
 //
-//	X/tilesets/tileset_NNN_mountains.zel (tileset type 0)
-//	X/tilesets/tileset_NNN_buildings.zel (tileset type 1)
-//	X/tilesets/tileset_NNN_floors.zel    (tileset type 2)
-//	X/tilesets/tileset_NNN_objects.zel   (tileset type 3)
-//	X/tilesets/tileset_NNN_shadows.zel   (tileset type 4)
+//	X/base_floors_tileset.zel                 (base floors)
+//	X/base_walls_tileset/base_walls_NNN.zel   (base walls)
+//	X/tilesets/tileset_NNN_mountains.zel      (tileset type 0)
+//	X/tilesets/tileset_NNN_buildings.zel      (tileset type 1)
+//	X/tilesets/tileset_NNN_floors.zel         (tileset type 2)
+//	X/tilesets/tileset_NNN_objects.zel        (tileset type 3)
+//	X/tilesets/tileset_NNN_shadows.zel        (tileset type 4)
 var tilesetInfos = []*TilesetInfo{
+	// base floors.
+	{
+		TilesetName:       "base_floors",
+		TilesetWidth:      768,
+		TilesetHeight:     2272,
+		TilesetTileWidth:  64, // mapTileWidth
+		TilesetTileHeight: 32, // mapTileHeight
+		BaseTileID:        baseFloorBaseTileID,
+	},
+	// base walls.
+	{
+		TilesetName:       "base_walls_1",
+		TilesetWidth:      512,
+		TilesetHeight:     384,
+		TilesetTileWidth:  64,
+		TilesetTileHeight: 192,
+		BaseTileID:        baseWalls1BaseTileID,
+	},
+	{
+		TilesetName:       "base_walls_2",
+		TilesetWidth:      512,
+		TilesetHeight:     384,
+		TilesetTileWidth:  64,
+		TilesetTileHeight: 192,
+		BaseTileID:        baseWalls2BaseTileID,
+	},
+	{
+		TilesetName:       "base_walls_3",
+		TilesetWidth:      512,
+		TilesetHeight:     384,
+		TilesetTileWidth:  64,
+		TilesetTileHeight: 192,
+		BaseTileID:        baseWalls3BaseTileID,
+	},
+	{
+		TilesetName:       "base_walls_4",
+		TilesetWidth:      512,
+		TilesetHeight:     384,
+		TilesetTileWidth:  64,
+		TilesetTileHeight: 192,
+		BaseTileID:        baseWalls4BaseTileID,
+	},
+	{
+		TilesetName:       "base_walls_5",
+		TilesetWidth:      512,
+		TilesetHeight:     384,
+		TilesetTileWidth:  64,
+		TilesetTileHeight: 192,
+		BaseTileID:        baseWalls5BaseTileID,
+	},
+	{
+		TilesetName:       "base_walls_6",
+		TilesetWidth:      512,
+		TilesetHeight:     384,
+		TilesetTileWidth:  64,
+		TilesetTileHeight: 192,
+		BaseTileID:        baseWalls6BaseTileID,
+	},
+	{
+		TilesetName:       "base_walls_7",
+		TilesetWidth:      512,
+		TilesetHeight:     384,
+		TilesetTileWidth:  64,
+		TilesetTileHeight: 192,
+		BaseTileID:        baseWalls7BaseTileID,
+	},
 	// floors (tileset type 2).
 	{
 		TilesetName:       "tileset_1/floors",
 		TilesetWidth:      768,
 		TilesetHeight:     800,
-		TilesetTileWidth:  mapTileWidth,
-		TilesetTileHeight: mapTileHeight,
+		TilesetTileWidth:  64, // mapTileWidth
+		TilesetTileHeight: 32, // mapTileHeight
 		BaseTileID:        tileset1FloorBaseTileID,
 	},
 	{
 		TilesetName:       "tileset_2/floors",
 		TilesetWidth:      768,
 		TilesetHeight:     576,
-		TilesetTileWidth:  mapTileWidth,
-		TilesetTileHeight: mapTileHeight,
+		TilesetTileWidth:  64, // mapTileWidth
+		TilesetTileHeight: 32, // mapTileHeight
 		BaseTileID:        tileset2FloorBaseTileID,
 	},
 	{
 		TilesetName:       "tileset_3/floors",
 		TilesetWidth:      768,
 		TilesetHeight:     800,
-		TilesetTileWidth:  mapTileWidth,
-		TilesetTileHeight: mapTileHeight,
+		TilesetTileWidth:  64, // mapTileWidth
+		TilesetTileHeight: 32, // mapTileHeight
 		BaseTileID:        tileset3FloorBaseTileID,
 	},
 	{
 		TilesetName:       "tileset_4/floors",
 		TilesetWidth:      768,
 		TilesetHeight:     800,
-		TilesetTileWidth:  mapTileWidth,
-		TilesetTileHeight: mapTileHeight,
+		TilesetTileWidth:  64, // mapTileWidth
+		TilesetTileHeight: 32, // mapTileHeight
 		BaseTileID:        tileset4FloorBaseTileID,
 	},
 	{
 		TilesetName:       "tileset_5/floors",
 		TilesetWidth:      768,
 		TilesetHeight:     800,
-		TilesetTileWidth:  mapTileWidth,
-		TilesetTileHeight: mapTileHeight,
+		TilesetTileWidth:  64, // mapTileWidth
+		TilesetTileHeight: 32, // mapTileHeight
 		BaseTileID:        tileset5FloorBaseTileID,
 	},
 	{
 		TilesetName:       "tileset_6/floors",
 		TilesetWidth:      768,
 		TilesetHeight:     800,
-		TilesetTileWidth:  mapTileWidth,
-		TilesetTileHeight: mapTileHeight,
+		TilesetTileWidth:  64, // mapTileWidth
+		TilesetTileHeight: 32, // mapTileHeight
 		BaseTileID:        tileset6FloorBaseTileID,
 	},
 	{
 		TilesetName:       "tileset_7/floors",
 		TilesetWidth:      768,
 		TilesetHeight:     800,
-		TilesetTileWidth:  mapTileWidth,
-		TilesetTileHeight: mapTileHeight,
+		TilesetTileWidth:  64, // mapTileWidth
+		TilesetTileHeight: 32, // mapTileHeight
 		BaseTileID:        tileset7FloorBaseTileID,
 	},
 	{
 		TilesetName:       "tileset_8/floors",
 		TilesetWidth:      768,
 		TilesetHeight:     800,
-		TilesetTileWidth:  mapTileWidth,
-		TilesetTileHeight: mapTileHeight,
+		TilesetTileWidth:  64, // mapTileWidth
+		TilesetTileHeight: 32, // mapTileHeight
 		BaseTileID:        tileset8FloorBaseTileID,
 	},
 	{
 		TilesetName:       "tileset_9/floors",
 		TilesetWidth:      768,
 		TilesetHeight:     800,
-		TilesetTileWidth:  mapTileWidth,
-		TilesetTileHeight: mapTileHeight,
+		TilesetTileWidth:  64, // mapTileWidth
+		TilesetTileHeight: 32, // mapTileHeight
 		BaseTileID:        tileset9FloorBaseTileID,
 	},
 	{
 		TilesetName:       "tileset_10/floors",
 		TilesetWidth:      768,
 		TilesetHeight:     576,
-		TilesetTileWidth:  mapTileWidth,
-		TilesetTileHeight: mapTileHeight,
+		TilesetTileWidth:  64, // mapTileWidth
+		TilesetTileHeight: 32, // mapTileHeight
 		BaseTileID:        tileset10FloorBaseTileID,
 	},
 	{
 		TilesetName:       "tileset_11/floors",
 		TilesetWidth:      768,
 		TilesetHeight:     576,
-		TilesetTileWidth:  mapTileWidth,
-		TilesetTileHeight: mapTileHeight,
+		TilesetTileWidth:  64, // mapTileWidth
+		TilesetTileHeight: 32, // mapTileHeight
 		BaseTileID:        tileset11FloorBaseTileID,
 	},
 	{
 		TilesetName:       "tileset_12/floors",
 		TilesetWidth:      768,
 		TilesetHeight:     576,
-		TilesetTileWidth:  mapTileWidth,
-		TilesetTileHeight: mapTileHeight,
+		TilesetTileWidth:  64, // mapTileWidth
+		TilesetTileHeight: 32, // mapTileHeight
 		BaseTileID:        tileset12FloorBaseTileID,
 	},
 	{
 		TilesetName:       "tileset_13/floors",
 		TilesetWidth:      768,
 		TilesetHeight:     800,
-		TilesetTileWidth:  mapTileWidth,
-		TilesetTileHeight: mapTileHeight,
+		TilesetTileWidth:  64, // mapTileWidth
+		TilesetTileHeight: 32, // mapTileHeight
 		BaseTileID:        tileset13FloorBaseTileID,
 	},
 	{
 		TilesetName:       "tileset_14/floors",
 		TilesetWidth:      768,
 		TilesetHeight:     800,
-		TilesetTileWidth:  mapTileWidth,
-		TilesetTileHeight: mapTileHeight,
+		TilesetTileWidth:  64, // mapTileWidth
+		TilesetTileHeight: 32, // mapTileHeight
 		BaseTileID:        tileset14FloorBaseTileID,
 	},
 	{
 		TilesetName:       "tileset_15/floors",
 		TilesetWidth:      768,
 		TilesetHeight:     800,
-		TilesetTileWidth:  mapTileWidth,
-		TilesetTileHeight: mapTileHeight,
+		TilesetTileWidth:  64, // mapTileWidth
+		TilesetTileHeight: 32, // mapTileHeight
 		BaseTileID:        tileset15FloorBaseTileID,
 	},
 	{
 		TilesetName:       "tileset_16/floors",
 		TilesetWidth:      768,
 		TilesetHeight:     320,
-		TilesetTileWidth:  mapTileWidth,
-		TilesetTileHeight: mapTileHeight,
+		TilesetTileWidth:  64, // mapTileWidth
+		TilesetTileHeight: 32, // mapTileHeight
 		BaseTileID:        tileset16FloorBaseTileID,
 	},
 	{
 		TilesetName:       "tileset_17/floors",
 		TilesetWidth:      768,
 		TilesetHeight:     64,
-		TilesetTileWidth:  mapTileWidth,
-		TilesetTileHeight: mapTileHeight,
+		TilesetTileWidth:  64, // mapTileWidth
+		TilesetTileHeight: 32, // mapTileHeight
 		BaseTileID:        tileset17FloorBaseTileID,
 	},
 	// objects (tileset type 3).
@@ -707,17 +802,7 @@ var tilesetInfos = []*TilesetInfo{
 
 // addTilesets add all tilesets to the given TMX map.
 func addTilesets(tmxMap *tmx.Map) {
-	// Add base floors tileset.
-	baseFloorsTilesetInfo := &TilesetInfo{
-		TilesetName:       "base_floors",
-		TilesetWidth:      768,
-		TilesetHeight:     2272,
-		TilesetTileWidth:  64, // mapTileWidth
-		TilesetTileHeight: 32, // mapTileHeight
-		BaseTileID:        baseFloorBaseTileID,
-	}
-	addTileset(tmxMap, baseFloorsTilesetInfo)
-	// Add tileset NNN floors tilesets.
+	// Add tilesets.
 	for _, floorsTilesetInfo := range tilesetInfos {
 		addTileset(tmxMap, floorsTilesetInfo)
 	}
@@ -778,5 +863,30 @@ func Coord(x, y int) Coordinate {
 	return Coordinate{
 		X: x,
 		Y: y,
+	}
+}
+
+// getBaseWallBaseTileID returns the base walls tileset ID of the given map.
+//
+//	X/base_walls_tileset/base_walls_NNN.zel
+func getBaseWallBaseTileID(m *maps.Map) int {
+	// m.BaseWallsTilesetID in range [0, 7)
+	switch m.BaseWallsTilesetID {
+	case 0:
+		return baseWalls1BaseTileID
+	case 1:
+		return baseWalls2BaseTileID
+	case 2:
+		return baseWalls3BaseTileID
+	case 3:
+		return baseWalls4BaseTileID
+	case 4:
+		return baseWalls5BaseTileID
+	case 5:
+		return baseWalls6BaseTileID
+	case 6:
+		return baseWalls7BaseTileID
+	default:
+		panic(fmt.Errorf("support for base walls tileset ID %d not yet implemented", m.BaseWallsTilesetID))
 	}
 }

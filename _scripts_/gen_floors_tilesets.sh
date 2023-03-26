@@ -20,7 +20,6 @@ montage \
 # tilset type 2 (floors)
 
 for i in {1..17}; do
-	mkdir -p "_assets_/tilesets/tileset_${i}"
 	echo "Creating \"_assets_/tilesets/tileset_${i}/floors.png\""
 	montage \
 		_dump_/X/tilesets/tileset_${i}_floors/frame_*.png \

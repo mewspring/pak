@@ -213,6 +213,9 @@ func addLayers(tmxMap *tmx.Map, m *maps.Map) {
 	}
 	addLayer(tmxMap, floorsLayerName, floorsTiledTileIDAt)
 
+	// Shadows overlay.
+	addShadowsOverlay(tmxMap, m)
+
 	// Base walls layer.
 	const baseWallsLayerName = "base_walls"
 	baseWallFrameAt := make(map[Coordinate]int)
@@ -295,7 +298,48 @@ func addLayer(tmxMap *tmx.Map, tilesLayerName string, tiledTileIDAt func(x, y in
 		Opacity: 1.0,
 		Visible: 1,
 	}
-	tmxMap.Layers = append(tmxMap.Layers, tilesLayer)
+	// Layer placed in group to get correct Z-order between layers and overlays
+	// (e.g. shadows and mountains).
+	group := tmx.Group{
+		Name:    tilesLayerName,
+		Opacity: 1.0,
+		Visible: 1,
+	}
+	group.Layers = append(group.Layers, tilesLayer)
+	tmxMap.Groups = append(tmxMap.Groups, group)
+}
+
+// shadowOpacity specifies the opacity of the shadow overlay.
+const shadowOpacity = 0.5
+
+// addShadowsOverlay converts MAP shadows overlay to TMX format.
+func addShadowsOverlay(tmxMap *tmx.Map, m *maps.Map) {
+	// Shadows overlays group.
+	const shadowsName = "shadows"
+	shadowGroup := tmx.Group{
+		Name:    shadowsName,
+		Opacity: shadowOpacity,
+		Visible: 1,
+	}
+	for i, shadow := range m.Shadows {
+		const tilesetID = 2 // TODO: add support for more tilesets.
+		tilesetName := fmt.Sprintf("tileset_%d", tilesetID)
+		pngName := fmt.Sprintf("frame_%0004d.png", shadow.Frame)
+		pngPath := filepath.Join("..", "tilesets", tilesetName, shadowsName, pngName)
+		imageLayer := tmx.ImageLayer{
+			Name:    fmt.Sprintf("shadow_%d", i),
+			OffsetX: float64(shadow.X),
+			OffsetY: float64(shadow.Y),
+			Opacity: 1.0,
+			Visible: 1,
+		}
+		img := tmx.Image{
+			Source: pngPath,
+		}
+		imageLayer.Images = append(imageLayer.Images, img)
+		shadowGroup.ImageLayers = append(shadowGroup.ImageLayers, imageLayer)
+	}
+	tmxMap.Groups = append(tmxMap.Groups, shadowGroup)
 }
 
 // TilesetInfo specifies the name, dimensions and base tile ID of a given

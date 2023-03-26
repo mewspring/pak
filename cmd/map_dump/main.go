@@ -62,24 +62,42 @@ const (
 )
 
 const (
-	baseFloorBaseTileID      = 0 + 1          // X/base_floors_tileset.zel
-	tileset1FloorBaseTileID  = 1*100_000 + 1  // X/tilesets/tileset_1_floors.zel
-	tileset2FloorBaseTileID  = 2*100_000 + 1  // X/tilesets/tileset_2_floors.zel
-	tileset3FloorBaseTileID  = 3*100_000 + 1  // X/tilesets/tileset_3_floors.zel
-	tileset4FloorBaseTileID  = 4*100_000 + 1  // X/tilesets/tileset_4_floors.zel
-	tileset5FloorBaseTileID  = 5*100_000 + 1  // X/tilesets/tileset_5_floors.zel
-	tileset6FloorBaseTileID  = 6*100_000 + 1  // X/tilesets/tileset_6_floors.zel
-	tileset7FloorBaseTileID  = 7*100_000 + 1  // X/tilesets/tileset_7_floors.zel
-	tileset8FloorBaseTileID  = 8*100_000 + 1  // X/tilesets/tileset_8_floors.zel
-	tileset9FloorBaseTileID  = 9*100_000 + 1  // X/tilesets/tileset_9_floors.zel
-	tileset10FloorBaseTileID = 10*100_000 + 1 // X/tilesets/tileset_10_floors.zel
-	tileset11FloorBaseTileID = 11*100_000 + 1 // X/tilesets/tileset_11_floors.zel
-	tileset12FloorBaseTileID = 12*100_000 + 1 // X/tilesets/tileset_12_floors.zel
-	tileset13FloorBaseTileID = 13*100_000 + 1 // X/tilesets/tileset_13_floors.zel
-	tileset14FloorBaseTileID = 14*100_000 + 1 // X/tilesets/tileset_14_floors.zel
-	tileset15FloorBaseTileID = 15*100_000 + 1 // X/tilesets/tileset_15_floors.zel
-	tileset16FloorBaseTileID = 16*100_000 + 1 // X/tilesets/tileset_16_floors.zel
-	tileset17FloorBaseTileID = 17*100_000 + 1 // X/tilesets/tileset_17_floors.zel
+	baseFloorBaseTileID      = 0 + 1                     // X/base_floors_tileset.zel
+	tileset1FloorBaseTileID  = 200_000*0 + 1*10_000 + 1  // X/tilesets/tileset_1_floors.zel
+	tileset2FloorBaseTileID  = 200_000*0 + 2*10_000 + 1  // X/tilesets/tileset_2_floors.zel
+	tileset3FloorBaseTileID  = 200_000*0 + 3*10_000 + 1  // X/tilesets/tileset_3_floors.zel
+	tileset4FloorBaseTileID  = 200_000*0 + 4*10_000 + 1  // X/tilesets/tileset_4_floors.zel
+	tileset5FloorBaseTileID  = 200_000*0 + 5*10_000 + 1  // X/tilesets/tileset_5_floors.zel
+	tileset6FloorBaseTileID  = 200_000*0 + 6*10_000 + 1  // X/tilesets/tileset_6_floors.zel
+	tileset7FloorBaseTileID  = 200_000*0 + 7*10_000 + 1  // X/tilesets/tileset_7_floors.zel
+	tileset8FloorBaseTileID  = 200_000*0 + 8*10_000 + 1  // X/tilesets/tileset_8_floors.zel
+	tileset9FloorBaseTileID  = 200_000*0 + 9*10_000 + 1  // X/tilesets/tileset_9_floors.zel
+	tileset10FloorBaseTileID = 200_000*0 + 10*10_000 + 1 // X/tilesets/tileset_10_floors.zel
+	tileset11FloorBaseTileID = 200_000*0 + 11*10_000 + 1 // X/tilesets/tileset_11_floors.zel
+	tileset12FloorBaseTileID = 200_000*0 + 12*10_000 + 1 // X/tilesets/tileset_12_floors.zel
+	tileset13FloorBaseTileID = 200_000*0 + 13*10_000 + 1 // X/tilesets/tileset_13_floors.zel
+	tileset14FloorBaseTileID = 200_000*0 + 14*10_000 + 1 // X/tilesets/tileset_14_floors.zel
+	tileset15FloorBaseTileID = 200_000*0 + 15*10_000 + 1 // X/tilesets/tileset_15_floors.zel
+	tileset16FloorBaseTileID = 200_000*0 + 16*10_000 + 1 // X/tilesets/tileset_16_floors.zel
+	tileset17FloorBaseTileID = 200_000*0 + 17*10_000 + 1 // X/tilesets/tileset_17_floors.zel
+
+	tileset1ObjectBaseTileID  = 200_000*1 + 1*10_000 + 1  // X/tilesets/tileset_1_objects.zel
+	tileset2ObjectBaseTileID  = 200_000*1 + 2*10_000 + 1  // X/tilesets/tileset_2_objects.zel
+	tileset3ObjectBaseTileID  = 200_000*1 + 3*10_000 + 1  // X/tilesets/tileset_3_objects.zel
+	tileset4ObjectBaseTileID  = 200_000*1 + 4*10_000 + 1  // X/tilesets/tileset_4_objects.zel
+	tileset5ObjectBaseTileID  = 200_000*1 + 5*10_000 + 1  // X/tilesets/tileset_5_objects.zel
+	tileset6ObjectBaseTileID  = 200_000*1 + 6*10_000 + 1  // X/tilesets/tileset_6_objects.zel
+	tileset7ObjectBaseTileID  = 200_000*1 + 7*10_000 + 1  // X/tilesets/tileset_7_objects.zel
+	tileset8ObjectBaseTileID  = 200_000*1 + 8*10_000 + 1  // X/tilesets/tileset_8_objects.zel
+	tileset9ObjectBaseTileID  = 200_000*1 + 9*10_000 + 1  // X/tilesets/tileset_9_objects.zel
+	tileset10ObjectBaseTileID = 200_000*1 + 10*10_000 + 1 // X/tilesets/tileset_10_objects.zel
+	tileset11ObjectBaseTileID = 200_000*1 + 11*10_000 + 1 // X/tilesets/tileset_11_objects.zel
+	tileset12ObjectBaseTileID = 200_000*1 + 12*10_000 + 1 // X/tilesets/tileset_12_objects.zel
+	tileset13ObjectBaseTileID = 200_000*1 + 13*10_000 + 1 // X/tilesets/tileset_13_objects.zel
+	tileset14ObjectBaseTileID = 200_000*1 + 14*10_000 + 1 // X/tilesets/tileset_14_objects.zel
+	tileset15ObjectBaseTileID = 200_000*1 + 15*10_000 + 1 // X/tilesets/tileset_15_objects.zel
+	tileset16ObjectBaseTileID = 200_000*1 + 16*10_000 + 1 // X/tilesets/tileset_16_objects.zel
+	tileset17ObjectBaseTileID = 200_000*1 + 17*10_000 + 1 // X/tilesets/tileset_17_objects.zel
 )
 
 const outputDir = "_assets_"
@@ -136,8 +154,8 @@ func convertMapToTmx(m *maps.Map) *tmx.Map {
 // addLayers converts MAP layers to TMX format.
 func addLayers(tmxMap *tmx.Map, m *maps.Map) {
 	// Base floor layer.
-	const baseFloorLayerName = "base_floor"
-	baseFloorTiledTileIDAt := func(x, y int) int {
+	const baseFloorsLayerName = "base_floors"
+	baseFloorsTiledTileIDAt := func(x, y int) int {
 		floorFrame := int(int16(m.FloorFrameMap[y][x]))
 		// base floor tile IDs are positive.
 		if floorFrame < 0 {
@@ -148,11 +166,11 @@ func addLayers(tmxMap *tmx.Map, m *maps.Map) {
 		tiledTileID := base + floorFrame
 		return tiledTileID
 	}
-	addLayer(tmxMap, baseFloorLayerName, baseFloorTiledTileIDAt)
+	addLayer(tmxMap, baseFloorsLayerName, baseFloorsTiledTileIDAt)
 
 	// Floor layer.
-	const floorLayerName = "floor"
-	floorTiledTileIDAt := func(x, y int) int {
+	const floorsLayerName = "floors"
+	floorsTiledTileIDAt := func(x, y int) int {
 		floorFrame := int(int16(m.FloorFrameMap[y][x]))
 		// tileset type 2 (floors) tile IDs are negative.
 		if floorFrame >= 0 {
@@ -160,11 +178,29 @@ func addLayers(tmxMap *tmx.Map, m *maps.Map) {
 		}
 		floorFrame &= 0x7FFF
 		//dbg.Println("negative floorFrame:", floorFrame)
-		const base = tileset1FloorBaseTileID // TODO: add support for tileset_NNN/ type.
+		const base = tileset2FloorBaseTileID // TODO: add support for tileset_NNN/ type.
 		tiledTileID := base + floorFrame
 		return tiledTileID
 	}
-	addLayer(tmxMap, floorLayerName, floorTiledTileIDAt)
+	addLayer(tmxMap, floorsLayerName, floorsTiledTileIDAt)
+
+	// Object layer.
+	const objectsLayerName = "objects"
+	objectFrameAt := make(map[Coordinate]int)
+	for _, object := range m.Objects {
+		objectFrameAt[Coord(int(object.X), int(object.Y))] = int(object.Frame)
+	}
+	objectsTiledTileIDAt := func(x, y int) int {
+		objectFrame, ok := objectFrameAt[Coord(x, y)]
+		if !ok {
+			return 0
+		}
+		//dbg.Println("objectFrame:", objectFrame)
+		const base = tileset2ObjectBaseTileID // TODO: add support for tileset_NNN/ type.
+		tiledTileID := base + objectFrame
+		return tiledTileID
+	}
+	addLayer(tmxMap, objectsLayerName, objectsTiledTileIDAt)
 }
 
 // addLayer adds the layer as specified to the given TMX map.
@@ -211,6 +247,7 @@ type TilesetInfo struct {
 // floorsTilesetInfos specifies the tileset info of
 // `X/tilesets/tileset_NNN_floors.zel` floor tilesets
 var floorsTilesetInfos = []*TilesetInfo{
+	// floors.
 	{
 		TilesetName:       "tileset_1/floors",
 		TilesetWidth:      768,
@@ -347,6 +384,143 @@ var floorsTilesetInfos = []*TilesetInfo{
 		TilesetTileHeight: mapTileHeight,
 		BaseTileID:        tileset17FloorBaseTileID,
 	},
+	// objects.
+	{
+		TilesetName:       "tileset_1/objects",
+		TilesetWidth:      6180,
+		TilesetHeight:     4992,
+		TilesetTileWidth:  515,
+		TilesetTileHeight: 416,
+		BaseTileID:        tileset1ObjectBaseTileID,
+	},
+	{
+		TilesetName:       "tileset_2/objects",
+		TilesetWidth:      5376,
+		TilesetHeight:     3072,
+		TilesetTileWidth:  448,
+		TilesetTileHeight: 384,
+		BaseTileID:        tileset2ObjectBaseTileID,
+	},
+	{
+		TilesetName:       "tileset_3/objects",
+		TilesetWidth:      5376,
+		TilesetHeight:     3072,
+		TilesetTileWidth:  448,
+		TilesetTileHeight: 384,
+		BaseTileID:        tileset3ObjectBaseTileID,
+	},
+	{
+		TilesetName:       "tileset_4/objects",
+		TilesetWidth:      5376,
+		TilesetHeight:     3072,
+		TilesetTileWidth:  448,
+		TilesetTileHeight: 384,
+		BaseTileID:        tileset4ObjectBaseTileID,
+	},
+	{
+		TilesetName:       "tileset_5/objects",
+		TilesetWidth:      5376,
+		TilesetHeight:     3072,
+		TilesetTileWidth:  448,
+		TilesetTileHeight: 384,
+		BaseTileID:        tileset5ObjectBaseTileID,
+	},
+	{
+		TilesetName:       "tileset_6/objects",
+		TilesetWidth:      5376,
+		TilesetHeight:     3072,
+		TilesetTileWidth:  448,
+		TilesetTileHeight: 384,
+		BaseTileID:        tileset6ObjectBaseTileID,
+	},
+	{
+		TilesetName:       "tileset_7/objects",
+		TilesetWidth:      5376,
+		TilesetHeight:     3072,
+		TilesetTileWidth:  448,
+		TilesetTileHeight: 384,
+		BaseTileID:        tileset7ObjectBaseTileID,
+	},
+	{
+		TilesetName:       "tileset_8/objects",
+		TilesetWidth:      6180,
+		TilesetHeight:     4992,
+		TilesetTileWidth:  515,
+		TilesetTileHeight: 416,
+		BaseTileID:        tileset8ObjectBaseTileID,
+	},
+	{
+		TilesetName:       "tileset_9/objects",
+		TilesetWidth:      6180,
+		TilesetHeight:     4992,
+		TilesetTileWidth:  515,
+		TilesetTileHeight: 416,
+		BaseTileID:        tileset9ObjectBaseTileID,
+	},
+	{
+		TilesetName:       "tileset_10/objects",
+		TilesetWidth:      6180,
+		TilesetHeight:     4576,
+		TilesetTileWidth:  515,
+		TilesetTileHeight: 416,
+		BaseTileID:        tileset10ObjectBaseTileID,
+	},
+	{
+		TilesetName:       "tileset_11/objects",
+		TilesetWidth:      6180,
+		TilesetHeight:     4992,
+		TilesetTileWidth:  515,
+		TilesetTileHeight: 416,
+		BaseTileID:        tileset11ObjectBaseTileID,
+	},
+	{
+		TilesetName:       "tileset_12/objects",
+		TilesetWidth:      6180,
+		TilesetHeight:     4992,
+		TilesetTileWidth:  515,
+		TilesetTileHeight: 416,
+		BaseTileID:        tileset12ObjectBaseTileID,
+	},
+	{
+		TilesetName:       "tileset_13/objects",
+		TilesetWidth:      6180,
+		TilesetHeight:     4992,
+		TilesetTileWidth:  515,
+		TilesetTileHeight: 416,
+		BaseTileID:        tileset13ObjectBaseTileID,
+	},
+	{
+		TilesetName:       "tileset_14/objects",
+		TilesetWidth:      6180,
+		TilesetHeight:     4992,
+		TilesetTileWidth:  515,
+		TilesetTileHeight: 416,
+		BaseTileID:        tileset14ObjectBaseTileID,
+	},
+	{
+		TilesetName:       "tileset_15/objects",
+		TilesetWidth:      6180,
+		TilesetHeight:     4992,
+		TilesetTileWidth:  515,
+		TilesetTileHeight: 416,
+		BaseTileID:        tileset15ObjectBaseTileID,
+	},
+	{
+		TilesetName:       "tileset_16/objects",
+		TilesetWidth:      6180,
+		TilesetHeight:     4992,
+		TilesetTileWidth:  515,
+		TilesetTileHeight: 416,
+		BaseTileID:        tileset16ObjectBaseTileID,
+	},
+	{
+		TilesetName:       "tileset_17/objects",
+		TilesetWidth:      2784,
+		TilesetHeight:     496,
+		TilesetTileWidth:  232,
+		TilesetTileHeight: 248,
+		BaseTileID:        tileset17ObjectBaseTileID,
+	},
 }
 
 // addTilesets add all tilesets to the given TMX map.
@@ -383,6 +557,12 @@ func addTileset(tmxMap *tmx.Map, tilesetInfo *TilesetInfo) {
 		TileHeight: tilesetInfo.TilesetTileHeight,
 		Image:      []tmx.Image{tilesetImg},
 	}
+	if tileset.TileWidth != mapTileWidth || tileset.TileHeight != mapTileHeight {
+		// Use tile offset to center tiles larger than 64x32.
+		xoff := (mapTileWidth - tileset.TileWidth) / 2
+		yoff := 0
+		tileset.TileOffset = []tmx.TileOffset{{X: float64(xoff), Y: float64(yoff)}}
+	}
 	tmxMap.Tilesets = append(tmxMap.Tilesets, tileset)
 }
 
@@ -403,4 +583,18 @@ func dumpTmx(tmxPath string, tmxMap *tmx.Map) error {
 		return errors.WithStack(err)
 	}
 	return nil
+}
+
+// Coordinate specifies a (x,y)-coordinate on the map.
+type Coordinate struct {
+	X int
+	Y int
+}
+
+// Coord returns the given (x,y)-coordinate.
+func Coord(x, y int) Coordinate {
+	return Coordinate{
+		X: x,
+		Y: y,
+	}
 }

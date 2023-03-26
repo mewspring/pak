@@ -45,40 +45,40 @@ type Map struct {
 	//
 	//	X/tilesets/tileset_NNN_mountains_and_stairs.zel
 	//
-	// ntileset0Elems uint32
-	Tileset0Elems []MapTile // len: ntileset0Elems
+	// nmountains uint32
+	Mountains []MapTile // len: nmountains
 	// Tileset type 4 holds shadows
 	//
 	//	X/tilesets/tileset_NNN_shadows.zel
 	//
-	// ntileset4Elems uint32
-	Tileset4Elems []MapTile // len: ntileset4Elems
+	// nshadows uint32
+	Shadows []MapTile // len: nshadows
 	// Tileset type 1 holds walls and buildings
 	//
 	//	X/tilesets/tileset_NNN_walls_and_buildings.zel
 	//
-	// ntileset1Elems uint32 // in range [0, 4096)
-	Tileset1Elems []MapTile2 // len: ntileset1Elems
+	// nbuildings uint32 // in range [0, 4096)
+	Buildings []MapTile2 // len: nbuildings
 	// Tileset type 3 holds objects
 	//
 	//	X/tilesets/tileset_NNN_objects.zel
 	//
-	// ntileset3Elems uint32 // in range [0, 4096)
-	Tileset3Elems []MapTile2 // len: ntileset3Elems
+	// nobjects uint32 // in range [0, 4096)
+	Objects []MapTile2 // len: nobjects
 	// Base walls tileset (of X subarchive 4)
 	//
 	//	X/base_walls_tileset/base_walls_NNN.zel
 	//
 	// ntilesetWallsElems uint32 // in range [0, 4096)
-	TilesetWallsElems []MapTile2 // len: ntilesetWallsElems
+	BaseWalls []MapTile2 // len: ntilesetWallsElems
 }
 
 // MapTile specifies the tileset frame index and map coordinate of a map tile.
 type MapTile struct {
 	Frame uint16
 	_     [2]byte // padding
-	X     uint32
-	Y     uint32
+	X     int32
+	Y     int32
 	_     [8]byte // padding
 }
 
@@ -121,66 +121,76 @@ func ParseFile(mapPath string) (*Map, error) {
 	if err := binary.Read(r, binary.LittleEndian, &m.SolidMap); err != nil {
 		return nil, errors.WithStack(err)
 	}
-	dbg.Printf("m.SolidMap:\n%v", m.SolidMap)
+	//dbg.Printf("m.SolidMap:\n%v", m.SolidMap)
 	// Floors.
 	if err := binary.Read(r, binary.LittleEndian, &m.FloorFrameMap); err != nil {
 		return nil, errors.WithStack(err)
 	}
-	dbg.Printf("m.FloorFrameMap:\n%v", m.FloorFrameMap)
+	//dbg.Printf("m.FloorFrameMap:\n%v", m.FloorFrameMap)
 	// Tileset 0 (stairs and mountains).
-	var ntileset0Elems uint32
-	if err := binary.Read(r, binary.LittleEndian, &ntileset0Elems); err != nil {
+	var nmountains uint32
+	if err := binary.Read(r, binary.LittleEndian, &nmountains); err != nil {
 		return nil, errors.WithStack(err)
 	}
-	dbg.Println("ntileset0Elems:", ntileset0Elems)
-	m.Tileset0Elems = make([]MapTile, int(ntileset0Elems))
-	if err := binary.Read(r, binary.LittleEndian, &m.Tileset0Elems); err != nil {
+	m.Mountains = make([]MapTile, int(nmountains))
+	if err := binary.Read(r, binary.LittleEndian, &m.Mountains); err != nil {
 		return nil, errors.WithStack(err)
 	}
-	dbg.Printf("m.Tileset0Elems (stairs and mountains):\n%v", m.Tileset0Elems)
+	dbg.Println("m.Mountains (stairs and mountains):")
+	for _, mountain := range m.Mountains {
+		dbg.Println("   mountain:", mountain)
+	}
 	// Tileset 4 (shadows).
-	var ntileset4Elems uint32
-	if err := binary.Read(r, binary.LittleEndian, &ntileset4Elems); err != nil {
+	var nshadows uint32
+	if err := binary.Read(r, binary.LittleEndian, &nshadows); err != nil {
 		return nil, errors.WithStack(err)
 	}
-	dbg.Println("ntileset4Elems:", ntileset4Elems)
-	m.Tileset4Elems = make([]MapTile, int(ntileset4Elems))
-	if err := binary.Read(r, binary.LittleEndian, &m.Tileset4Elems); err != nil {
+	m.Shadows = make([]MapTile, int(nshadows))
+	if err := binary.Read(r, binary.LittleEndian, &m.Shadows); err != nil {
 		return nil, errors.WithStack(err)
 	}
-	dbg.Printf("m.Tileset4Elems (shadows):\n%v", m.Tileset4Elems)
+	dbg.Println("m.Shadows (shadows):")
+	for _, shadow := range m.Shadows {
+		dbg.Println("   shadow:", shadow)
+	}
 	// Tileset 1 (walls and buildings).
-	var ntileset1Elems uint32
-	if err := binary.Read(r, binary.LittleEndian, &ntileset1Elems); err != nil {
+	var nbuildings uint32
+	if err := binary.Read(r, binary.LittleEndian, &nbuildings); err != nil {
 		return nil, errors.WithStack(err)
 	}
-	dbg.Println("ntileset1Elems:", ntileset1Elems)
-	m.Tileset1Elems = make([]MapTile2, int(ntileset1Elems))
-	if err := binary.Read(r, binary.LittleEndian, &m.Tileset1Elems); err != nil {
+	m.Buildings = make([]MapTile2, int(nbuildings))
+	if err := binary.Read(r, binary.LittleEndian, &m.Buildings); err != nil {
 		return nil, errors.WithStack(err)
 	}
-	dbg.Printf("m.Tileset1Elems (walls and buildings):\n%v", m.Tileset1Elems)
+	dbg.Println("m.Buildings (walls and buildings):")
+	for _, building := range m.Buildings {
+		dbg.Println("   building:", building)
+	}
 	// Tileset 3 (objects).
-	var ntileset3Elems uint32
-	if err := binary.Read(r, binary.LittleEndian, &ntileset3Elems); err != nil {
+	var nobjects uint32
+	if err := binary.Read(r, binary.LittleEndian, &nobjects); err != nil {
 		return nil, errors.WithStack(err)
 	}
-	dbg.Println("ntileset3Elems:", ntileset3Elems)
-	m.Tileset3Elems = make([]MapTile2, int(ntileset3Elems))
-	if err := binary.Read(r, binary.LittleEndian, &m.Tileset3Elems); err != nil {
+	m.Objects = make([]MapTile2, int(nobjects))
+	if err := binary.Read(r, binary.LittleEndian, &m.Objects); err != nil {
 		return nil, errors.WithStack(err)
 	}
-	dbg.Printf("m.Tileset3Elems (objects):\n%v", m.Tileset3Elems)
+	dbg.Println("m.Objects (objects):")
+	for _, object := range m.Objects {
+		dbg.Println("   object:", object)
+	}
 	// Base walls.
 	var ntilesetWallsElems uint32
 	if err := binary.Read(r, binary.LittleEndian, &ntilesetWallsElems); err != nil {
 		return nil, errors.WithStack(err)
 	}
-	dbg.Println("ntilesetWallsElems:", ntilesetWallsElems)
-	m.TilesetWallsElems = make([]MapTile2, int(ntilesetWallsElems))
-	if err := binary.Read(r, binary.LittleEndian, &m.TilesetWallsElems); err != nil {
+	m.BaseWalls = make([]MapTile2, int(ntilesetWallsElems))
+	if err := binary.Read(r, binary.LittleEndian, &m.BaseWalls); err != nil {
 		return nil, errors.WithStack(err)
 	}
-	dbg.Printf("m.TilesetWallsElems:\n%v", m.TilesetWallsElems)
+	dbg.Println("m.BaseWalls:")
+	for _, baseWall := range m.BaseWalls {
+		dbg.Println("   baseWall:", baseWall)
+	}
 	return m, nil
 }

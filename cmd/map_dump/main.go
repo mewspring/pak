@@ -137,15 +137,16 @@ func dumpMap(mapPath string) error {
 	if err != nil {
 		return errors.WithStack(err)
 	}
+	mapName := pathutil.FileName(mapPath)
+	tilesetID := tilesetIDFromMapName(mapName)
 	// Convert MAP file to TMX format.
-	tmxMap := convertMapToTmx(m)
+	tmxMap := convertMapToTmx(m, tilesetID)
 	// Output TMX map.
 	// Store TMX file to output directory.
 	dstDir := filepath.Join(outputDir, "maps")
 	if err := os.MkdirAll(dstDir, 0755); err != nil {
 		log.Fatalf("%+v", errors.WithStack(err))
 	}
-	mapName := pathutil.FileName(mapPath)
 	tmxName := fmt.Sprintf("%s.tmx", mapName)
 	tmxPath := filepath.Join(dstDir, tmxName)
 	if err := dumpTmx(tmxPath, tmxMap); err != nil {
@@ -155,7 +156,7 @@ func dumpMap(mapPath string) error {
 }
 
 // convertMapToTmx converts the given MAP file to TMX format.
-func convertMapToTmx(m *maps.Map) *tmx.Map {
+func convertMapToTmx(m *maps.Map, tilesetID int) *tmx.Map {
 	//pretty.Println("map:", m)
 	//fmt.Println("solid map:")
 	//for y := 0; y < 128; y++ {
@@ -176,12 +177,12 @@ func convertMapToTmx(m *maps.Map) *tmx.Map {
 	// Add TMX tilesets.
 	addTilesets(tmxMap)
 	// Add layers.
-	addLayers(tmxMap, m)
+	addLayers(tmxMap, m, tilesetID)
 	return tmxMap
 }
 
 // addLayers converts MAP layers to TMX format.
-func addLayers(tmxMap *tmx.Map, m *maps.Map) {
+func addLayers(tmxMap *tmx.Map, m *maps.Map, tilesetID int) {
 	// Base floor layer.
 	const baseFloorsLayerName = "base_floors"
 	baseFloorsTiledTileIDAt := func(x, y int) int {
@@ -207,7 +208,7 @@ func addLayers(tmxMap *tmx.Map, m *maps.Map) {
 		}
 		floorFrame &= 0x7FFF
 		//dbg.Println("negative floorFrame:", floorFrame)
-		const base = tileset2FloorBaseTileID // TODO: add support for tileset_NNN/ type.
+		base := getFloorsBaseTileID(tilesetID)
 		tiledTileID := base + floorFrame
 		return tiledTileID
 	}
@@ -219,7 +220,7 @@ func addLayers(tmxMap *tmx.Map, m *maps.Map) {
 		// backgroundOpacity specifies the opacity of the background overlay.
 		backgroundOpacity = 1.0
 	)
-	addOverlay(tmxMap, m.Backgrounds, backgroundGroupName, backgroundOpacity)
+	addOverlay(tmxMap, m.Backgrounds, backgroundGroupName, backgroundOpacity, tilesetID)
 
 	// Shadows overlay.
 	const (
@@ -227,7 +228,7 @@ func addLayers(tmxMap *tmx.Map, m *maps.Map) {
 		// shadowOpacity specifies the opacity of the shadow overlay.
 		shadowOpacity = 0.5
 	)
-	addOverlay(tmxMap, m.Shadows, shadowGroupName, shadowOpacity)
+	addOverlay(tmxMap, m.Shadows, shadowGroupName, shadowOpacity, tilesetID)
 
 	// Base walls layer.
 	const baseWallsLayerName = "base_walls"
@@ -241,7 +242,7 @@ func addLayers(tmxMap *tmx.Map, m *maps.Map) {
 			return 0
 		}
 		//dbg.Println("baseWallFrame:", baseWallFrame)
-		base := getBaseWallBaseTileID(m)
+		base := getBaseWallsBaseTileID(m)
 		tiledTileID := base + baseWallFrame
 		return tiledTileID
 	}
@@ -259,7 +260,7 @@ func addLayers(tmxMap *tmx.Map, m *maps.Map) {
 			return 0
 		}
 		//dbg.Println("objectFrame:", objectFrame)
-		const base = tileset2ObjectBaseTileID // TODO: add support for tileset_NNN/ type.
+		base := getObjectsBaseTileID(tilesetID)
 		tiledTileID := base + objectFrame
 		return tiledTileID
 	}
@@ -277,7 +278,7 @@ func addLayers(tmxMap *tmx.Map, m *maps.Map) {
 			return 0
 		}
 		//dbg.Println("buildingFrame:", buildingFrame)
-		const base = tileset2BuildingBaseTileID // TODO: add support for tileset_NNN/ type.
+		base := getBuildingsBaseTileID(tilesetID)
 		tiledTileID := base + buildingFrame
 		return tiledTileID
 	}
@@ -323,14 +324,13 @@ func addLayer(tmxMap *tmx.Map, tilesLayerName string, tiledTileIDAt func(x, y in
 }
 
 // addOverlay adds the given overlays as a group to the TMX map.
-func addOverlay(tmxMap *tmx.Map, overlays []maps.MapOverlay, overlayName string, opacity float64) {
+func addOverlay(tmxMap *tmx.Map, overlays []maps.MapOverlay, overlayName string, opacity float64, tilesetID int) {
 	group := tmx.Group{
 		Name:    overlayName,
 		Opacity: opacity,
 		Visible: 1,
 	}
 	for i, overlay := range overlays {
-		const tilesetID = 2 // TODO: add support for more tilesets.
 		tilesetName := fmt.Sprintf("tileset_%d", tilesetID)
 		pngName := fmt.Sprintf("frame_%0004d.png", overlay.Frame)
 		pngPath := filepath.Join("..", "tilesets", tilesetName, overlayName, pngName)
@@ -916,10 +916,142 @@ func Coord(x, y int) Coordinate {
 	}
 }
 
-// getBaseWallBaseTileID returns the base walls tileset ID of the given map.
+// getFloorsBaseTileID returns the floors tileset ID of the given map.
+//
+//	X/tilesets/tileset_NNN_floors.zel
+func getFloorsBaseTileID(tilesetID int) int {
+	switch tilesetID {
+	case 1:
+		return tileset1FloorBaseTileID
+	case 2:
+		return tileset2FloorBaseTileID
+	case 3:
+		return tileset3FloorBaseTileID
+	case 4:
+		return tileset4FloorBaseTileID
+	case 5:
+		return tileset5FloorBaseTileID
+	case 6:
+		return tileset6FloorBaseTileID
+	case 7:
+		return tileset7FloorBaseTileID
+	case 8:
+		return tileset8FloorBaseTileID
+	case 9:
+		return tileset9FloorBaseTileID
+	case 10:
+		return tileset10FloorBaseTileID
+	case 11:
+		return tileset11FloorBaseTileID
+	case 12:
+		return tileset12FloorBaseTileID
+	case 13:
+		return tileset13FloorBaseTileID
+	case 14:
+		return tileset14FloorBaseTileID
+	case 15:
+		return tileset15FloorBaseTileID
+	case 16:
+		return tileset16FloorBaseTileID
+	case 17:
+		return tileset17FloorBaseTileID
+	default:
+		panic(fmt.Errorf("support for floors tileset ID %d not yet implemented", tilesetID))
+	}
+}
+
+// getObjectsBaseTileID returns the objects tileset ID of the given map.
+//
+//	X/tilesets/tileset_NNN_objects.zel
+func getObjectsBaseTileID(tilesetID int) int {
+	switch tilesetID {
+	case 1:
+		return tileset1ObjectBaseTileID
+	case 2:
+		return tileset2ObjectBaseTileID
+	case 3:
+		return tileset3ObjectBaseTileID
+	case 4:
+		return tileset4ObjectBaseTileID
+	case 5:
+		return tileset5ObjectBaseTileID
+	case 6:
+		return tileset6ObjectBaseTileID
+	case 7:
+		return tileset7ObjectBaseTileID
+	case 8:
+		return tileset8ObjectBaseTileID
+	case 9:
+		return tileset9ObjectBaseTileID
+	case 10:
+		return tileset10ObjectBaseTileID
+	case 11:
+		return tileset11ObjectBaseTileID
+	case 12:
+		return tileset12ObjectBaseTileID
+	case 13:
+		return tileset13ObjectBaseTileID
+	case 14:
+		return tileset14ObjectBaseTileID
+	case 15:
+		return tileset15ObjectBaseTileID
+	case 16:
+		return tileset16ObjectBaseTileID
+	case 17:
+		return tileset17ObjectBaseTileID
+	default:
+		panic(fmt.Errorf("support for objects tileset ID %d not yet implemented", tilesetID))
+	}
+}
+
+// getBuildingsBaseTileID returns the buildings tileset ID of the given map.
+//
+//	X/tilesets/tileset_NNN_buildings.zel
+func getBuildingsBaseTileID(tilesetID int) int {
+	switch tilesetID {
+	case 1:
+		return tileset1BuildingBaseTileID
+	case 2:
+		return tileset2BuildingBaseTileID
+	case 3:
+		return tileset3BuildingBaseTileID
+	case 4:
+		return tileset4BuildingBaseTileID
+	case 5:
+		return tileset5BuildingBaseTileID
+	case 6:
+		return tileset6BuildingBaseTileID
+	case 7:
+		return tileset7BuildingBaseTileID
+	case 8:
+		return tileset8BuildingBaseTileID
+	case 9:
+		return tileset9BuildingBaseTileID
+	case 10:
+		return tileset10BuildingBaseTileID
+	case 11:
+		return tileset11BuildingBaseTileID
+	case 12:
+		return tileset12BuildingBaseTileID
+	case 13:
+		return tileset13BuildingBaseTileID
+	case 14:
+		return tileset14BuildingBaseTileID
+	case 15:
+		return tileset15BuildingBaseTileID
+	case 16:
+		return tileset16BuildingBaseTileID
+	case 17:
+		return tileset17BuildingBaseTileID
+	default:
+		panic(fmt.Errorf("support for buildings tileset ID %d not yet implemented", tilesetID))
+	}
+}
+
+// getBaseWallsBaseTileID returns the base walls tileset ID of the given map.
 //
 //	X/base_walls_tileset/base_walls_NNN.zel
-func getBaseWallBaseTileID(m *maps.Map) int {
+func getBaseWallsBaseTileID(m *maps.Map) int {
 	// m.BaseWallsTilesetID in range [0, 7)
 	switch m.BaseWallsTilesetID {
 	case 0:
@@ -938,5 +1070,24 @@ func getBaseWallBaseTileID(m *maps.Map) int {
 		return baseWalls7BaseTileID
 	default:
 		panic(fmt.Errorf("support for base walls tileset ID %d not yet implemented", m.BaseWallsTilesetID))
+	}
+}
+
+// tilesetIDFromMapName returns the tileset ID of the given map.
+func tilesetIDFromMapName(mapName string) int {
+	var mapID int
+	if _, err := fmt.Sscanf(mapName, "map_%d", &mapID); err != nil {
+		panic(fmt.Errorf("unable to parse map name %q; expected format map_NNN", mapName))
+	}
+	// used for object frame in range [0, 8], which is part of all tilesets.
+	const anyTilesetID = 1
+	switch {
+	case 1 <= mapID && mapID <= 17:
+		tilesetID := mapID
+		return tilesetID
+	case mapID == 36:
+		return 17
+	default:
+		return anyTilesetID
 	}
 }

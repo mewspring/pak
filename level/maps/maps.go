@@ -193,9 +193,9 @@ func ParseFile(mapPath string) (*Map, error) {
 	if err := binary.Read(r, binary.LittleEndian, &m.BaseWalls); err != nil {
 		return nil, errors.WithStack(err)
 	}
-	dbg.Println("m.BaseWalls:")
-	for _, baseWall := range m.BaseWalls {
-		dbg.Println("   baseWall:", baseWall)
-	}
+	//dbg.Println("m.BaseWalls:")
+	//for _, baseWall := range m.BaseWalls {
+	//	dbg.Println("   baseWall:", baseWall)
+	//}
 	return m, nil
 }

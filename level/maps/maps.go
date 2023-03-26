@@ -46,47 +46,52 @@ type Map struct {
 	//	X/tilesets/tileset_NNN_mountains_and_stairs.zel
 	//
 	// nmountains uint32
-	Mountains []MapTile // len: nmountains
-	// Tileset type 4 holds shadows
+	Mountains []MapOverlay // len: nmountains
+	// Tileset type 4 holds shadows.
 	//
 	//	X/tilesets/tileset_NNN_shadows.zel
 	//
 	// nshadows uint32
-	Shadows []MapTile // len: nshadows
-	// Tileset type 1 holds buildings
+	Shadows []MapOverlay // len: nshadows
+	// Tileset type 1 holds buildings.
 	//
 	//	X/tilesets/tileset_NNN_buildings.zel
 	//
 	// nbuildings uint32 // in range [0, 4096)
-	Buildings []MapTile2 // len: nbuildings
-	// Tileset type 3 holds objects
+	Buildings []MapTile // len: nbuildings
+	// Tileset type 3 holds objects.
 	//
 	//	X/tilesets/tileset_NNN_objects.zel
 	//
 	// nobjects uint32 // in range [0, 4096)
-	Objects []MapTile2 // len: nobjects
-	// Base walls tileset (of X subarchive 4)
+	Objects []MapTile // len: nobjects
+	// Base walls tilesets (of X subarchive 4).
 	//
 	//	X/base_walls_tileset/base_walls_NNN.zel
 	//
 	// nbaseWalls uint32 // in range [0, 4096)
-	BaseWalls []MapTile2 // len: nbaseWalls
+	BaseWalls []MapTile // len: nbaseWalls
+}
+
+// MapOverlay specifies the tileset frame index and screen offset of a map
+// overlay.
+type MapOverlay struct {
+	// Tileset frame index.
+	Frame uint16
+	_     [2]byte // padding
+	// (X,Y)-screen offset in pixels.
+	X int32
+	Y int32
+	_ [8]byte // padding
 }
 
 // MapTile specifies the tileset frame index and map coordinate of a map tile.
 type MapTile struct {
+	// Tileset frame index.
 	Frame uint16
-	_     [2]byte // padding
-	X     int32
-	Y     int32
-	_     [8]byte // padding
-}
-
-// MapTile2 specifies the tileset frame index and map coordinate of a map tile.
-type MapTile2 struct {
-	Frame uint16
-	X     uint8
-	Y     uint8
+	// (X,Y) map coordinate.
+	X uint8
+	Y uint8
 }
 
 // ParseFile parses the given MAP file.
@@ -132,7 +137,7 @@ func ParseFile(mapPath string) (*Map, error) {
 	if err := binary.Read(r, binary.LittleEndian, &nmountains); err != nil {
 		return nil, errors.WithStack(err)
 	}
-	m.Mountains = make([]MapTile, int(nmountains))
+	m.Mountains = make([]MapOverlay, int(nmountains))
 	if err := binary.Read(r, binary.LittleEndian, &m.Mountains); err != nil {
 		return nil, errors.WithStack(err)
 	}
@@ -145,7 +150,7 @@ func ParseFile(mapPath string) (*Map, error) {
 	if err := binary.Read(r, binary.LittleEndian, &nshadows); err != nil {
 		return nil, errors.WithStack(err)
 	}
-	m.Shadows = make([]MapTile, int(nshadows))
+	m.Shadows = make([]MapOverlay, int(nshadows))
 	if err := binary.Read(r, binary.LittleEndian, &m.Shadows); err != nil {
 		return nil, errors.WithStack(err)
 	}
@@ -158,7 +163,7 @@ func ParseFile(mapPath string) (*Map, error) {
 	if err := binary.Read(r, binary.LittleEndian, &nbuildings); err != nil {
 		return nil, errors.WithStack(err)
 	}
-	m.Buildings = make([]MapTile2, int(nbuildings))
+	m.Buildings = make([]MapTile, int(nbuildings))
 	if err := binary.Read(r, binary.LittleEndian, &m.Buildings); err != nil {
 		return nil, errors.WithStack(err)
 	}
@@ -171,7 +176,7 @@ func ParseFile(mapPath string) (*Map, error) {
 	if err := binary.Read(r, binary.LittleEndian, &nobjects); err != nil {
 		return nil, errors.WithStack(err)
 	}
-	m.Objects = make([]MapTile2, int(nobjects))
+	m.Objects = make([]MapTile, int(nobjects))
 	if err := binary.Read(r, binary.LittleEndian, &m.Objects); err != nil {
 		return nil, errors.WithStack(err)
 	}
@@ -184,7 +189,7 @@ func ParseFile(mapPath string) (*Map, error) {
 	if err := binary.Read(r, binary.LittleEndian, &nbaseWalls); err != nil {
 		return nil, errors.WithStack(err)
 	}
-	m.BaseWalls = make([]MapTile2, int(nbaseWalls))
+	m.BaseWalls = make([]MapTile, int(nbaseWalls))
 	if err := binary.Read(r, binary.LittleEndian, &m.BaseWalls); err != nil {
 		return nil, errors.WithStack(err)
 	}

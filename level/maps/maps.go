@@ -53,9 +53,9 @@ type Map struct {
 	//
 	// nshadows uint32
 	Shadows []MapTile // len: nshadows
-	// Tileset type 1 holds walls and buildings
+	// Tileset type 1 holds buildings
 	//
-	//	X/tilesets/tileset_NNN_walls_and_buildings.zel
+	//	X/tilesets/tileset_NNN_buildings.zel
 	//
 	// nbuildings uint32 // in range [0, 4096)
 	Buildings []MapTile2 // len: nbuildings
@@ -69,8 +69,8 @@ type Map struct {
 	//
 	//	X/base_walls_tileset/base_walls_NNN.zel
 	//
-	// ntilesetWallsElems uint32 // in range [0, 4096)
-	BaseWalls []MapTile2 // len: ntilesetWallsElems
+	// nbaseWalls uint32 // in range [0, 4096)
+	BaseWalls []MapTile2 // len: nbaseWalls
 }
 
 // MapTile specifies the tileset frame index and map coordinate of a map tile.
@@ -149,11 +149,11 @@ func ParseFile(mapPath string) (*Map, error) {
 	if err := binary.Read(r, binary.LittleEndian, &m.Shadows); err != nil {
 		return nil, errors.WithStack(err)
 	}
-	dbg.Println("m.Shadows (shadows):")
+	dbg.Println("m.Shadows:")
 	for _, shadow := range m.Shadows {
 		dbg.Println("   shadow:", shadow)
 	}
-	// Tileset 1 (walls and buildings).
+	// Tileset 1 (buildings).
 	var nbuildings uint32
 	if err := binary.Read(r, binary.LittleEndian, &nbuildings); err != nil {
 		return nil, errors.WithStack(err)
@@ -162,7 +162,7 @@ func ParseFile(mapPath string) (*Map, error) {
 	if err := binary.Read(r, binary.LittleEndian, &m.Buildings); err != nil {
 		return nil, errors.WithStack(err)
 	}
-	dbg.Println("m.Buildings (walls and buildings):")
+	dbg.Println("m.Buildings:")
 	for _, building := range m.Buildings {
 		dbg.Println("   building:", building)
 	}
@@ -175,16 +175,16 @@ func ParseFile(mapPath string) (*Map, error) {
 	if err := binary.Read(r, binary.LittleEndian, &m.Objects); err != nil {
 		return nil, errors.WithStack(err)
 	}
-	dbg.Println("m.Objects (objects):")
+	dbg.Println("m.Objects:")
 	for _, object := range m.Objects {
 		dbg.Println("   object:", object)
 	}
 	// Base walls.
-	var ntilesetWallsElems uint32
-	if err := binary.Read(r, binary.LittleEndian, &ntilesetWallsElems); err != nil {
+	var nbaseWalls uint32
+	if err := binary.Read(r, binary.LittleEndian, &nbaseWalls); err != nil {
 		return nil, errors.WithStack(err)
 	}
-	m.BaseWalls = make([]MapTile2, int(ntilesetWallsElems))
+	m.BaseWalls = make([]MapTile2, int(nbaseWalls))
 	if err := binary.Read(r, binary.LittleEndian, &m.BaseWalls); err != nil {
 		return nil, errors.WithStack(err)
 	}

@@ -96,7 +96,7 @@ type MapTile struct {
 
 // ParseFile parses the given MAP file.
 func ParseFile(mapPath string) (*Map, error) {
-	dbg.Printf("parsing %q", mapPath)
+	//dbg.Printf("parsing %q", mapPath)
 	buf, err := ioutil.ReadFile(mapPath)
 	if err != nil {
 		return nil, errors.WithStack(err)
@@ -118,11 +118,11 @@ func ParseFile(mapPath string) (*Map, error) {
 	if err := binary.Read(r, binary.LittleEndian, &m.RenderWithLight); err != nil {
 		return nil, errors.WithStack(err)
 	}
-	dbg.Printf("m.RenderWithLight: 0x%02X", m.RenderWithLight)
+	//dbg.Printf("m.RenderWithLight: 0x%02X", m.RenderWithLight)
 	if err := binary.Read(r, binary.LittleEndian, &m.BaseWallsTilesetID); err != nil {
 		return nil, errors.WithStack(err)
 	}
-	dbg.Printf("m.BaseWallsTilesetID: 0x%02X", m.BaseWallsTilesetID)
+	//dbg.Printf("m.BaseWallsTilesetID: 0x%02X", m.BaseWallsTilesetID)
 	if err := binary.Read(r, binary.LittleEndian, &m.SolidMap); err != nil {
 		return nil, errors.WithStack(err)
 	}
@@ -141,10 +141,10 @@ func ParseFile(mapPath string) (*Map, error) {
 	if err := binary.Read(r, binary.LittleEndian, &m.Backgrounds); err != nil {
 		return nil, errors.WithStack(err)
 	}
-	dbg.Println("m.Backgrounds (stairs and mountains):")
-	for _, background := range m.Backgrounds {
-		dbg.Println("   background:", background)
-	}
+	//dbg.Println("m.Backgrounds (stairs and mountains):")
+	//for _, background := range m.Backgrounds {
+	//	dbg.Println("   background:", background)
+	//}
 	// Tileset 4 (shadows).
 	var nshadows uint32
 	if err := binary.Read(r, binary.LittleEndian, &nshadows); err != nil {
@@ -154,10 +154,10 @@ func ParseFile(mapPath string) (*Map, error) {
 	if err := binary.Read(r, binary.LittleEndian, &m.Shadows); err != nil {
 		return nil, errors.WithStack(err)
 	}
-	dbg.Println("m.Shadows:")
-	for _, shadow := range m.Shadows {
-		dbg.Println("   shadow:", shadow)
-	}
+	//dbg.Println("m.Shadows:")
+	//for _, shadow := range m.Shadows {
+	//	dbg.Println("   shadow:", shadow)
+	//}
 	// Tileset 1 (buildings).
 	var nbuildings uint32
 	if err := binary.Read(r, binary.LittleEndian, &nbuildings); err != nil {
@@ -167,10 +167,10 @@ func ParseFile(mapPath string) (*Map, error) {
 	if err := binary.Read(r, binary.LittleEndian, &m.Buildings); err != nil {
 		return nil, errors.WithStack(err)
 	}
-	dbg.Println("m.Buildings:")
-	for _, building := range m.Buildings {
-		dbg.Println("   building:", building)
-	}
+	//dbg.Println("m.Buildings:")
+	//for _, building := range m.Buildings {
+	//	dbg.Println("   building:", building)
+	//}
 	// Tileset 3 (objects).
 	var nobjects uint32
 	if err := binary.Read(r, binary.LittleEndian, &nobjects); err != nil {
@@ -180,10 +180,10 @@ func ParseFile(mapPath string) (*Map, error) {
 	if err := binary.Read(r, binary.LittleEndian, &m.Objects); err != nil {
 		return nil, errors.WithStack(err)
 	}
-	dbg.Println("m.Objects:")
-	for _, object := range m.Objects {
-		dbg.Println("   object:", object)
-	}
+	//dbg.Println("m.Objects:")
+	//for _, object := range m.Objects {
+	//	dbg.Println("   object:", object)
+	//}
 	// Base walls.
 	var nbaseWalls uint32
 	if err := binary.Read(r, binary.LittleEndian, &nbaseWalls); err != nil {

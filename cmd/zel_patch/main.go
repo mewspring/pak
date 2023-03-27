@@ -267,4 +267,24 @@ var files = []File{
 			},
 		},
 	},
+	// patch to fix frame 114 in X/tilesets/tileset_16_floors.zel.
+	{
+		path:       "_dump_/X/tilesets/tileset_16_floors.zel",
+		hashBefore: "e6348dd6aeab34e83040ac972caf963777644b67",
+		hashAfter:  "5d3e935be9424159f3cb54ec8a1854007f8f3f7e",
+		replaces: []Replace{
+			// remove two extra bytes of pixel line (otherwise cmd offset gets skewed).
+			{
+				pos:    0x223CF,
+				before: []byte{0x9F, 0x80}, // NOTE: which two pixels to remove is unknown.
+				after:  []byte{},
+			},
+			// add two missing bytes of pixel line (otherwise cmd offset gets skewed).
+			{
+				pos:    0x22579,
+				before: []byte{},
+				after:  []byte{0x9F, 0x80}, // NOTE: which two pixels to add is unknown.
+			},
+		},
+	},
 }

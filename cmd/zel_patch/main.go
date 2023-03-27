@@ -170,4 +170,40 @@ var files = []File{
 			},
 		},
 	},
+	// patch to fix frame 327 and 328 in X/tilesets/tileset_8_buildings.zel.
+	{
+		path:       "_dump_/X/tilesets/tileset_8_buildings.zel",
+		hashBefore: "5b34a4b0f4722b50e461aeba963e37ac85460112",
+		hashAfter:  "485d44e59ce719269c52c910d7bd06b824c4b82c",
+		replaces: []Replace{
+			// --- [ frame 327 ] ---
+			//
+			// remove two extra bytes of pixel line (otherwise cmd offset gets skewed).
+			{
+				pos:    0x30377A,
+				before: []byte{0xF9, 0x2D}, // NOTE: which two pixels to remove is unknown.
+				after:  []byte{},
+			},
+			// add two missing bytes of pixel line (otherwise cmd offset gets skewed).
+			{
+				pos:    0x303AEF,
+				before: []byte{},
+				after:  []byte{0xF9, 0x2D}, // NOTE: which two pixels to add is unknown.
+			},
+			// --- [ frame 328 ] ---
+			//
+			// remove two extra bytes of pixel line (otherwise cmd offset gets skewed).
+			{
+				pos:    0x3047AC,
+				before: []byte{0x2F, 0x99}, // NOTE: which two pixels to remove is unknown.
+				after:  []byte{},
+			},
+			// add two missing bytes of pixel line (otherwise cmd offset gets skewed).
+			{
+				pos:    0x304B06,
+				before: []byte{},
+				after:  []byte{0x2F, 0x99}, // NOTE: which two pixels to add is unknown.
+			},
+		},
+	},
 }

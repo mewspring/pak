@@ -375,7 +375,7 @@ var tilesetInfos = []*TilesetInfo{
 	{
 		TilesetName:       "base_floors",
 		TilesetWidth:      768,
-		TilesetHeight:     2272,
+		TilesetHeight:     3200,
 		TilesetTileWidth:  64, // mapTileWidth
 		TilesetTileHeight: 32, // mapTileHeight
 		BaseTileID:        baseFloorBaseTileID,
@@ -561,7 +561,7 @@ var tilesetInfos = []*TilesetInfo{
 	{
 		TilesetName:       "tileset_16/floors",
 		TilesetWidth:      768,
-		TilesetHeight:     320,
+		TilesetHeight:     800,
 		TilesetTileWidth:  64, // mapTileWidth
 		TilesetTileHeight: 32, // mapTileHeight
 		BaseTileID:        tileset16FloorBaseTileID,
@@ -650,7 +650,7 @@ var tilesetInfos = []*TilesetInfo{
 	{
 		TilesetName:       "tileset_10/objects",
 		TilesetWidth:      6180,
-		TilesetHeight:     4576,
+		TilesetHeight:     4992,
 		TilesetTileWidth:  515,
 		TilesetTileHeight: 416,
 		BaseTileID:        tileset10ObjectBaseTileID,

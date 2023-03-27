@@ -247,4 +247,24 @@ var files = []File{
 			},
 		},
 	},
+	// patch to fix frame 14 in X/tilesets/tileset_14_backgrounds.zel.
+	{
+		path:       "_dump_/X/tilesets/tileset_14_backgrounds.zel",
+		hashBefore: "efb4e1a2c57ee0765922f88c8a2ffc92a07b9586",
+		hashAfter:  "0ff2e032e245cf6eddd5e6ec6c2900525fc2844a",
+		replaces: []Replace{
+			// remove two extra bytes of pixel line (otherwise cmd offset gets skewed).
+			{
+				pos:    0x6C802,
+				before: []byte{0x7B, 0x7F}, // NOTE: which two pixels to remove is unknown.
+				after:  []byte{},
+			},
+			// add two missing bytes of pixel line (otherwise cmd offset gets skewed).
+			{
+				pos:    0x6CBFE,
+				before: []byte{},
+				after:  []byte{0x7B, 0x7F}, // NOTE: which two pixels to add is unknown.
+			},
+		},
+	},
 }

@@ -226,4 +226,25 @@ var files = []File{
 			},
 		},
 	},
+	// patch to fix frame 131 in X/tilesets/tileset_10_objects.zel.
+	{
+		path:       "_dump_/X/tilesets/tileset_10_objects.zel",
+		hashBefore: "bf892c37e3f666d49badf5d9aa28625ada429d32",
+		hashAfter:  "20b51edd1304d2e0ab7088fd232402b5e80ce7b2",
+		replaces: []Replace{
+			// remove two extra bytes of pixel line (otherwise cmd offset gets skewed).
+			{
+				pos:    0xFF270,
+				before: []byte{0xA3, 0xC1}, // NOTE: which two pixels to remove is unknown.
+				after:  []byte{},
+			},
+			// add two missing bytes of cmd directive.
+			{
+				pos:    0xFF62C,
+				before: []byte{},
+				// NOTE: adding 0x100D cmd to match format of succeeding pixels.
+				after: []byte{0x0D, 0x10},
+			},
+		},
+	},
 }

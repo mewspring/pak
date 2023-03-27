@@ -18,6 +18,11 @@ pak_dump -listfile listfile.json X.PAK
 ```
 
 ```bash
+# Patch broken ZEL images.
+zel_patch
+```
+
+```bash
 # Convert ZEL images to PNG format.
 find ./_dump_/X -type f -name "*.zel" -exec zel_dump -pal _dump_/X/core/core.pal {} \;
 ```

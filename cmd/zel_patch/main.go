@@ -287,4 +287,24 @@ var files = []File{
 			},
 		},
 	},
+	// patch to fix frame 842 in X/base_floors_tileset.zel.
+	{
+		path:       "_dump_/X/base_floors_tileset.zel",
+		hashBefore: "907b8804fb63b41cbf91bb7a1f5c6547923070d4",
+		hashAfter:  "5b309bc8e756634f9a611389a3c801168b3d3e1a",
+		replaces: []Replace{
+			// remove two extra bytes of pixel line (otherwise cmd offset gets skewed).
+			{
+				pos:    0x54E92,
+				before: []byte{0x00, 0x89}, // NOTE: which two pixels to remove is unknown.
+				after:  []byte{},
+			},
+			// add two missing bytes of pixel line (otherwise cmd offset gets skewed).
+			{
+				pos:    0x550EA,
+				before: []byte{},
+				after:  []byte{0x00, 0x89}, // NOTE: which two pixels to add is unknown.
+			},
+		},
+	},
 }

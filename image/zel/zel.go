@@ -16,6 +16,7 @@ import (
 	"strings"
 
 	"github.com/kr/pretty"
+	"github.com/mewkiz/pkg/imgutil"
 	"github.com/mewkiz/pkg/term"
 	"github.com/pkg/errors"
 )
@@ -103,6 +104,18 @@ func parseFrame(frameContents []byte, pal color.Palette, type4 bool) (image.Imag
 	dbg.Printf("frame dimensions: %dx%d", frameWidth, frameHeight)
 	bounds := image.Rect(0, 0, frameWidth, frameHeight)
 	dst := image.NewRGBA(bounds)
+
+	// TODO: remove partial_img.png output after broken ZEL images have been
+	// patched. Used now for debugging.
+	defer func() {
+		if e := recover(); e != nil {
+			if err := imgutil.WriteFile("_dump_/partial_img.png", dst); err != nil {
+				panic(err)
+			}
+			warn.Printf("recovered from %+v", e)
+		}
+	}()
+
 	data := frameContents[4:]
 	drawPixel, total := pixelDrawer(dst, frameWidth, frameHeight)
 	for pos := 0; pos < len(data); {
@@ -120,6 +133,9 @@ func parseFrame(frameContents []byte, pal color.Palette, type4 bool) (image.Imag
 			// transparent lines.
 			ySkip := int(cmd & 0xFFF)
 			//dbg.Printf("   transparent lines (ySkip=%d)", ySkip)
+			if ySkip > frameHeight {
+				panic(fmt.Errorf("invalid ySkip (%d); exceeds frame width (%d)", ySkip, frameWidth))
+			}
 			skip := ySkip * frameWidth
 			for j := 0; j < skip; j++ {
 				drawPixel(color.Transparent)
@@ -133,6 +149,9 @@ func parseFrame(frameContents []byte, pal color.Palette, type4 bool) (image.Imag
 				//
 				//    "X/tilesets/archive_NNNN.zel" where (NNNN%4 == 0)
 				//dbg.Printf("   constant pixels (npixels=%d)", npixels)
+				if npixels > frameWidth {
+					panic(fmt.Errorf("invalid npixels (%d); exceeds frame width (%d)", npixels, frameWidth))
+				}
 				for j := 0; j < npixels; j++ {
 					const palIndex = 8
 					//dbg.Printf("      constant pixel 0x%02X", palIndex)
@@ -140,6 +159,9 @@ func parseFrame(frameContents []byte, pal color.Palette, type4 bool) (image.Imag
 				}
 			default:
 				//dbg.Printf("   regular pixels (npixels=%d)", npixels)
+				if npixels > frameWidth {
+					panic(fmt.Errorf("invalid npixels (%d); exceeds frame width (%d)", npixels, frameWidth))
+				}
 				for j := 0; j < npixels; j++ {
 					palIndex := data[pos]
 					//dbg.Printf("      regular pixel 0x%02X", palIndex)
@@ -151,6 +173,9 @@ func parseFrame(frameContents []byte, pal color.Palette, type4 bool) (image.Imag
 			// transparent pixels.
 			xSkip := int(cmd & 0xFFF)
 			//dbg.Printf("   transparent pixels (xSkip=%d)", xSkip)
+			if xSkip > frameWidth {
+				panic(fmt.Errorf("invalid xSkip (%d); exceeds frame width (%d)", xSkip, frameWidth))
+			}
 			skip := xSkip
 			for j := 0; j < skip; j++ {
 				drawPixel(color.Transparent)
@@ -160,6 +185,9 @@ func parseFrame(frameContents []byte, pal color.Palette, type4 bool) (image.Imag
 			// clear line.
 			skip := (frameWidth - *total) % frameWidth // TODO: double-check that this is correct
 			//dbg.Printf("   clear line (skip=%d)", skip)
+			if skip != 0 {
+				panic(fmt.Errorf("unexpected clear line skip; expected 0, got %d", skip))
+			}
 			for j := 0; j < skip; j++ {
 				drawPixel(color.Transparent)
 			}

@@ -6,6 +6,7 @@
 git clone https://github.com/mewspring/pak
 cd pak
 go install ./cmd/pak_dump
+go install ./cmd/zel_patch
 go install ./cmd/zel_dump
 go install ./cmd/map_dump
 ```

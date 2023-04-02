@@ -153,7 +153,7 @@
 
 	"X/archive_0007.pak": "X/gamedata.pak",
 	"X/gamedata/file_0000.bin": "X/gamedata/map_data.bin",
-	"X/gamedata/file_0001.bin": "X/gamedata/shop_menu_structures.bin",
+	"X/gamedata/file_0001.bin": "X/gamedata/shop_menus.bin",
 	"X/gamedata/file_0002.bin": "X/gamedata/npc_dialogs.bin"
 
 	"X/archive_0008.pak": "X/missiles.pak",

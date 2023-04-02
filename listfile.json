@@ -1,7 +1,7 @@
 {
 	"X/archive_0000.pak": "X/core.pak",
-	"X/core/file_0000.bin": "X/core/font1.bin",
-	"X/core/file_0001.bin": "X/core/font2.bin",
+	"X/core/file_0000.bin": "X/core/font8.bin",
+	"X/core/file_0001.bin": "X/core/font16.bin",
 	"X/core/file_0002.bin": "X/core/core.pal",
 	"X/core/file_0003.bin": "X/core/palette.bmp",
 
@@ -151,8 +151,10 @@
 	"X/objects/archive_0026.pak": "X/objects/grated_door_sw.zel",
 	"X/objects/archive_0027.pak": "X/objects/grated_door_se.zel",
 
-	"X/archive_0007.pak": "X/unknown.pak",
-	"X/unknown/file_0001.bin": "X/unknown/texts_22_len.bin",
+	"X/archive_0007.pak": "X/gamedata.pak",
+	"X/gamedata/file_0000.bin": "X/gamedata/map_data.bin",
+	"X/gamedata/file_0001.bin": "X/gamedata/shop_menu_structures.bin",
+	"X/gamedata/file_0002.bin": "X/gamedata/npc_dialogs.bin"
 
 	"X/archive_0008.pak": "X/missiles.pak",
 	"X/missiles/archive_0000.pak": "X/missiles/lightning.zel",
